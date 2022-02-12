@@ -6,7 +6,7 @@ This repository contains all the materials and resources that I gathered through
   - [Advanced Cryptography](https://github.com/DLarisa/SAL-Materials-FMI-Master-Degree/tree/master/Anul%20I%20(2021%20-%202022)/Sem%20I/Advanced%20Cryptography) - **math**
   - [Deontologie și Etică Academică](https://github.com/DLarisa/SAL-Materials-FMI-Master-Degree/tree/master/Anul%20I%20(2021%20-%202022)/Sem%20I/Deontologie%20%C8%99i%20Etic%C4%83%20Academic%C4%83) - **literature**
   - [Logic for Multiagent Systems](https://github.com/DLarisa/SAL-Materials-FMI-Master-Degree/tree/master/Anul%20I%20(2021%20-%202022)/Sem%20I/Logic%20for%20Multiagent%20Systems) - **Lean**
-  - [Network Security](https://github.com/DLarisa/SAL-Materials-FMI-Master-Degree/tree/master/Anul%20I%20(2021%20-%202022)/Sem%20I/Network%20Security)
+  - [Network Security](https://github.com/DLarisa/SAL-Materials-FMI-Master-Degree/tree/master/Anul%20I%20(2021%20-%202022)/Sem%20I/Network%20Security) - **linux**
   - [Programare Web Cu Java (Opțional)](https://github.com/DLarisa/SAL-Materials-FMI-Master-Degree/tree/master/Anul%20I%20(2021%20-%202022)/Sem%20I/Programare%20Web%20Cu%20Java%20(Op%C8%9Bional)) - **Java**
 
 ## *Optional / Supplementary*:
