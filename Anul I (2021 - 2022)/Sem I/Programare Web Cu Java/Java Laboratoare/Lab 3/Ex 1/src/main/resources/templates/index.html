@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<!--Așa recunoaște că folosim thy-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>Person List: </h1>
+    <table>
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Age</th>
+            <th>Delete Person</th>
+        </tr>
+        <tr th:each="person : ${data}">
+            <td th:text="${person.getFirstName()}"></td>
+            <td th:text="${person.getLastName()}"></td>
+            <td th:text="${person.getAge()}"></td>
+            <td><a th:href="@{/delete/{firstName}(firstName=${person.getFirstName()})}">Delete Person</a></td>
+        </tr>
+    </table>
+    <br><br><br>
+
+    <form action="#" th:action="@{/person/add}" th:object="${person}" method="post">
+        <label for="firstName">First Name : </label><br>
+        <input type="text" id="firstName" th:field="*{firstName}"><br>
+
+        <label for="lastName">Last Name : </label><br>
+        <input type="text" id="lastName" th:field="*{lastName}"><br>
+
+        <label for="age">Age: </label><br>
+        <input type="text" id="age" th:field="*{age}"><br><br>
+
+        <input type="submit" value="Add person">
+    </form>
+</body>
+</html>

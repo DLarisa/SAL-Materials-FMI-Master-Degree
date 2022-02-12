@@ -1,0 +1,20 @@
+Crypto background:
+
+	D.Boneh: https://www.youtube.com/watch?v=cNgtp3Qh2yM&list=PL2jykFOD1AWYosqucluZghEVjUkopdD1e
+	J. Katz: https://www.youtube.com/watch?v=hizBOt3n2sc&list=PL2jykFOD1AWb07OLBdFI2QIHvPo3aTTeu
+
+	C.Paar, J.Pelzi - Understanding Crytography: https://link.springer.com/book/10.1007%2F978-3-642-04101-3
+	A.Menezes et al. - Handbook of Applied Cryptography: http://cacr.uwaterloo.ca/hac/
+	International Association for Cryptographic Research (IACR): https://iacr.org/
+	Kryszczuk, K., & Richiardi, J. (2014). Springer Encyclopedia of Cryptography and Security. Available online: https://www.researchgate.net/publication/230674947_Springer_Encyclopedia_of_Cryptography_and_Security 
+
+
+
+Organisations / Standardisation:
+
+	ENISA: https://www.enisa.europa.eu
+	IEEE: https://www.ieee.org/ 
+	3GPP: https://www.3gpp.org
+	Wi-Fi Alliance: https://www.wi-fi.org
+	ITU-T: https://www.itu.int/en/Pages/default.aspx
+	ETSI: https://www.etsi.org

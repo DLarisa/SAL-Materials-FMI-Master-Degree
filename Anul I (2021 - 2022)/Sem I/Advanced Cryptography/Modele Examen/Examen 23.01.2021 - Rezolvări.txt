@@ -1,0 +1,172 @@
+1. ELGAMAL ADITIV
+
+n = 256, g = 127, x = 129, y = 131, m = 133.
+
+Alice: h = "g^x" = 127 * 129 mod 256 = (128 - 1)(128 + 1) mod 256 = 255 mod 256.
+
+Bob: c1 = "g^y" = 127 * 131 mod 256 = (128 - 1)(128 + 3) mod 256 = 0 + 3*128 - 128 -3 mod 256 = -3 mod 256 = 253 mod 256.
+
+c2 = "m h^y" = 133 + (-1)*131 mod 256 = 2 mod 256
+
+Bob sends (c1, c2) = (255, 2).
+
+Alice: m = "c2 (c1)^(-x)" = 2 - 253*129 mod 256 = 2 - (-3)*(128 + 1) mod 256 = 2 + 3*128 + 3 mod 256 = 128 + 5 mod 256 = 133.
+
+Eva: computes first g^(-1) mod n = 127^(-1) mod 256, as follows:
+
+256 = 2*127 + 2, so 2 = (-2) 127,
+127 = 63*2 + 1, so 1 = 127 - 63(-2) 127 = 127 * 127. 
+
+So  127^(-1) mod 256 = 127.
+
+Alice's secret key is 127 * 255 mod 256 = 127 * (-1) mod 256 = 129 mod 256.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+2. ELGAMAL MULTIPLICATIV modulo p = 23, g = 2, h = 3, (c1, c2) = (4,5).
+
+3 = 2^x mod 23, we look for x. Powers of 2 modulo 23 are:
+
+2, 4, 8, 16, -14, 18, -10, 3. So x = 8.
+
+m = c2 (c1)^(-x) = 5 * 4^(-8). We first compute 4^8 by successive squaring:
+
+4 ---> 4^2 = 16 = -7 ---> 4^4 = 49 = 3 ---> 4^8 = 9.
+
+Now we need 9^(-1) mod 23.
+
+23 = 2*9 + 5, 5 = (-2)*9,
+9 = 5 + 4, 4 = 9 - (-2)*9 = 3*9
+5 = 4 + 1, 1 = (-2)*9 - 3*9 = (-5)*9 = 18*9,
+9^(-1) mod 23 = 18.
+
+m = 5*18 mod 23 = 21.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+3. RSA modulo 85 with phi. e = 9, c = 10.
+ 
+phi(85) = phi(5*17) = 4*16 = 64.
+64 = 7*9 + 1, 1 = (-7)*9 = 57*9.
+
+m = 10^57 mod 85. 57 = 32 + 16 + 8 + 1.
+
+10 ---> 10^2 = 15 ---> 10^4 = 55 ---> 10^8 = 50 ---> 10^16 = 35 ---> 10^32 = 35.
+
+Deci m = 35 * 35 * 50 * 10 = 75.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+4. RSA modulo 85 with lambda. e = 9, c = 10.
+
+lambda(85) = lambda(5*17) = lcm(4, 16) = 16.
+16 = 9 + 7, 7 = -9,
+9 = 7 + 2, 2 = 9 - (-9) = 2*9,
+7 = 3*2 + 1, 1 = 7 - 3*2 = -9 - 3*(2*9) = (-7)*9 = 9*9.
+So 9^(-1) mod 16 = 9.
+
+m = 10^9 mod 85. Because 9 = 8 + 1, and 
+10 ---> 10^2 = 15 ---> 10^4 = 55 ---> 10^8 = 50  mod 85,
+
+m = 50 * 10 mod 85 = 5 * 100 mod 85 = 5 * 15 mod 85 = 75.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+5. Goldwasser - Micali modulo 2021. Decrypt 269, 673, 1415, 1743.
+
+2021 = 43 * 47.
+
+269 mod 43 = 11
+673 mod 43 = 28
+1415 mod 43 = 39
+1743 mod 43 = 23
+
+(11|43) = - (43|11) = -(-1|11) = -(-1) = 1, m1 = 0.
+(38|43) = (4 * 7 |43) = (7|43) = -(43|7) = -(1|7) = -1, m2 = 1.
+(39|43) = (3|43)(13|43) = (-1)(43|3)(43|13) = (-1) (1|3)(4|13) = -1. m3 = 1.
+(23|43) = (-1) (43|23) = (-1) (20|23) = (-1) (5|23) = (-1)(3|5) = (-1)(2|3) = (-1)(-1) = 1, m4 = 0.
+So m = m1m2m3m4 = 0110.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+6. Shamir Secret Sharing mod 23. Pairs  (5, 3), (10, 15) and (22, 10).
+
+s - a + b = 10, because 22 = -1,
+s + 5a + 2b = 3,
+s + 10a + 8b = 15.
+
+Subtract the first equation:
+
+s - a + b = 10,
+   6a + b = 16,
+  11a + 7b = 5.
+
+Compute 6^(-1) mod 23 = 4, multiply the second equation with 4.
+
+s - a + b = 10,
+    a + 4b = 18,
+  11a + 7b = 5.
+
+Last equation minus 11 times the second:
+
+s - a + b = 10,
+    a + 4b = 18,
+        9b = 14.
+
+Compute 9^(-1) mod 23:
+
+23 = 2*9 + 5, 5 = (-2)*9,
+9 = 5 + 4, 4 = 9 - (-2)*9 = 3*9,
+5 = 4 + 1, 1 = 5 - 4 = (-2)*9 - 3*9 = (-5)*9 = 18*9,
+
+so 9^(-1) mod 23 = 18. We multiply last equation with 18 = - 5 and we get:
+
+-45 b = - 70, b = -70 + 69 = -1. So b = -1, a - 4 = 18, so a = 22 = -1, and 
+s + 1 - 1 = 10, so s = 10.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+7. Cipolla, sqr(18) mod 23. 
+
+(18|23) = (2|23)(9|23) = (-1)^( 24*22/8 ) = 1, so the square root does exist.
+
+We look for a such that a^2 - 18 is not a square. 
+
+If a = 3, then a^2 - 18 = 9 - 18 = 32 - 18 = 14. 14 = -9 is not a square, because 9 is a square but -1 is not a square mod p = 4k+3, and 23 is such a prime.
+
+Let w be a symbol with w^2 = 14. We must compute (3 + w)^(12).
+
+(3 + w)^2 = 9 + 6w + 14 = 6w,
+
+(3 + w)^4 = 36*14 = 13*14 = 26*7 = 3*7 = 21 = -2.
+
+(3 + w)^8 = 4
+
+(3 + w)^(12) = -8 = 15.
+
+So the square roots are 15 and -15 = 8.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+8. Polynomial of degree 17 in (Z/85Z):
+
+f(X) = X^(17) - X
+
+We show that for all x in (Z/85Z), f(x) = 0. 
+
+Indeed, modulo 5, if m = 0 then m^(17) = m mod 5
+If m =/= 0, m^(17) = (m^4)^4 * m = m mod 5
+
+Also, modulo 17, m^17 = m for all m. 
+
+But gcd(17, 5) = 1 so m^(17) - m = 0 mod 85 = 5 * 17 for all m, from the Chinese Remainder Theorem.
+
+f(X) = X^(17) - X is identic zero in (Z/85Z), this means that it has 85 roots in this ring, so in particular it has more roots as its degree.
+
+
+
+
+
+
+
+

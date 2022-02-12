@@ -1,0 +1,65 @@
+CREATE TABLE `albums` (
+  `album_id` int NOT NULL AUTO_INCREMENT,
+  `no_tracks` int DEFAULT NULL,
+  `title` varchar(255) NOT NULL,
+  `year` varchar(255) DEFAULT NULL,
+  `album_details_id` int DEFAULT NULL,
+  `group_id` int DEFAULT NULL,
+  PRIMARY KEY (`album_id`),
+  KEY `FKomjxk1taeuekpdw1rb1ghqfwy` (`album_details_id`),
+  KEY `FK8dr7j7mjh0cuxs968jly5lxy7` (`group_id`),
+  CONSTRAINT `FK8dr7j7mjh0cuxs968jly5lxy7` FOREIGN KEY (`group_id`) REFERENCES `groups_musicians` (`group_id`),
+  CONSTRAINT `FKomjxk1taeuekpdw1rb1ghqfwy` FOREIGN KEY (`album_details_id`) REFERENCES `albums_details` (`album_details_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `albums_details` (
+  `album_details_id` int NOT NULL AUTO_INCREMENT,
+  `price` double NOT NULL,
+  `quantity` int NOT NULL,
+  PRIMARY KEY (`album_details_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `artists` (
+  `artist_id` int NOT NULL AUTO_INCREMENT,
+  `date_birth` varchar(255) NOT NULL,
+  `first_name` varchar(255) NOT NULL,
+  `last_name` varchar(255) NOT NULL,
+  `stage_name` varchar(255) NOT NULL,
+  `group_id` int DEFAULT NULL,
+  PRIMARY KEY (`artist_id`),
+  UNIQUE KEY `UK_3tcwv992nnpibrerhhl7nnjfb` (`stage_name`),
+  KEY `FKlyen2t4rhjhg0vihd7h40aegl` (`group_id`),
+  CONSTRAINT `FKlyen2t4rhjhg0vihd7h40aegl` FOREIGN KEY (`group_id`) REFERENCES `groups_musicians` (`group_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `genres` (
+  `genre_id` int NOT NULL AUTO_INCREMENT,
+  `type` varchar(255) NOT NULL,
+  PRIMARY KEY (`genre_id`),
+  UNIQUE KEY `UK_mi1pkdha007yt6mr9h4xvp38q` (`type`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `groups_musicians` (
+  `group_id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `no_members` int NOT NULL,
+  `year_debut` varchar(255) NOT NULL,
+  `year_disbandment` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`group_id`),
+  UNIQUE KEY `UK_airq145x2j8cndrtd2319rwf6` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `songs` (
+  `song_id` int NOT NULL AUTO_INCREMENT,
+  `language` int DEFAULT NULL,
+  `length` varchar(255) DEFAULT NULL,
+  `title` varchar(255) NOT NULL,
+  `album_id` int DEFAULT NULL,
+  PRIMARY KEY (`song_id`),
+  KEY `FKte4gkb2cqtk2erfa87oopj2cj` (`album_id`),
+  CONSTRAINT `FKte4gkb2cqtk2erfa87oopj2cj` FOREIGN KEY (`album_id`) REFERENCES `albums` (`album_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `songs_genres` (
+  `song_id` int NOT NULL,
+  `genre_id` int NOT NULL,
+  KEY `FKs02tnp6d1vs4go7cltqfdou0d` (`genre_id`),
+  KEY `FKe9j0j50c3i76ex0owuug5u1gn` (`song_id`),
+  CONSTRAINT `FKe9j0j50c3i76ex0owuug5u1gn` FOREIGN KEY (`song_id`) REFERENCES `songs` (`song_id`),
+  CONSTRAINT `FKs02tnp6d1vs4go7cltqfdou0d` FOREIGN KEY (`genre_id`) REFERENCES `genres` (`genre_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+SELECT * FROM finalproject.albums_details;

@@ -1,0 +1,92 @@
+Lecture 1 (October, 5th)
+We have discussed general aspects (e.g., grading, course organization). We did a Kahoot
+(see Basics.xlsx in Lecture Materials). Revise the notions/concepts in the Kahoot questions.   
+
+
+
+Lecture 2 (October, 12th)
+We have introduced the course project (see Course Projects section). We have discussed general principles, 
+in relation to network security (see Lecture materials > Pages on Security: 6. Principles). We have discussed 
+Wired Equivalent Privacy (WEP), you have seen the presentation of WEP by D.Boneh available online at 
+https://www.youtube.com/watch?v=k8c0lFqvH2w&list=PL2jykFOD1AWYosqucluZghEVjUkopdD1e&t=418s 
+(start: 6:50 - end: 13:37), then we discussed WEP in detail (see Lecture Materials > 12_pages_on_security.pdf)
+
+
+
+Lecture 3 (October, 19th)
+We argued about the security of WEP (see Lecture Materials > WEP EN.pdf). We have watched a short video on 802.1x:
+https://www.youtube.com/watch?v=G3XJH0xvS1o. We have talked about WiFi Protected Access (WPA) and its improvements
+over WEP but also its limitations - (see Lecture Materials > 13_pages_on_security.pdf).
+
+
+
+Lecture 4 (October, 26th)
+We have started with a Kahoot to test your knowledge from the previous lecture 
+(see the results in Lecture Materials > Standards, Technologies, Protocols.xlsx). We have continued with WPA 
+and discussed the 4-way handshake (see Lecture Materials > 20_pages_on_security). We talked about WPA2 and related 
+notions (RSN, CCMP, key hierarchy, etc.) (see Lecture Materials > 17_pages_on_security). You can read more online 
+about WPA2 vulnerabilities and attacks (e.g., KRACK - https://www.krackattacks.com/ , Kr00k).
+
+
+
+Lecture 5 (November, 2nd):
+You solved two exercises (Activities > WPA2 vs WPA/WEP and 802.1X/RSN/WPA2/802.11i). We have then talked about 
+the WPA3 (see Lecture Materials > 21_pages_on_security). I suggest you to have a look at these resources: 
+https://www.youtube.com/watch?v=44I1wfgGT80&ab_channel=Hak5 
+https://www.youtube.com/watch?v=w1c_zzDsFbE#t=37m40s&ab_channel=RealWorldCrypto 
+https://www.wi-fi.org/discover-wi-fi/security 
+We have discussed some of the statements from the last years’ exams - the first exercise. We will continue with 
+the second exam next time.  For next time, have a look at exercise 3 from Exam 2019-2020 and exercise 2 from 
+Exam 2020-2021. We will discuss them during the next lecture.
+
+
+
+Lecture 6 (November, 9th)
+We have discussed the remaining exercises from the last years’ exams (see Lecture 5 info). We have started to study 
+mobile security with a short intro on mobile networks and focus on 5G, as not many of you chose their course topic. 
+You have been pointed out to search for information in the standards (3GPP, ETSI, etc.) or other organizations 
+(e.g., ENISA, NIST) whenever needed. 
+
+
+
+Lecture 7 (November, 16th)
+We have started to study mobile security and GSM (2G) security (see Lecture Materials > 23_pages_on_security and 
+the slides from the last years). You can find the MCC and MNC values for different countries and operators here: 
+https://www.mcc-mnc.com.
+
+
+
+Lecture 8 (November, 23rd)
+We have attended one presentation on 5G security (see Course Projects section). We have discussed exercise 2 from 
+2019-2020 exam. We have started our discussion on LTE security (see the lecture slides from last years).
+
+
+
+Lecture 9 (December, 7th)
+We have continued our study on LTE security. 
+
+
+
+Lecture 10 (December, 14th)
+We discussed exercise 3 from Exam 2021-2022.
+
+
+
+Lecture 11 (December, 21st)
+We have attended 7 presentations on 5G security.
+
+
+
+Lecture 12 (January, 3rd)
+You need to read about VPN, IPSec and SSL/TLS by yourself:
+https://www.kaspersky.com/resource-center/definitions/what-is-a-vpn 
+From https://www.researchgate.net/publication/230674947_Springer_Encyclopedia_of_Cryptography_and_Security - IPSec (starting at pp.310), 
+SSL (starting at pp.548), and TLS (starting pp.624).
+
+
+
+Lecture 13 (January, 11th)
+Continue self learning on SSL/TLS: watch https://youtu.be/AZKTwTn8szE?list=PL2jykFOD1AWb07OLBdFI2QIHvPo3aTTeu
+and remember what you read in Springer Encyclopedia of Cryptography and Security last time. 
+The RFC https://datatracker.ietf.org/doc/html/rfc8446 . 
+Remember that SSL/TLS is part of the curriculum, as well as the presentations on 5G. 

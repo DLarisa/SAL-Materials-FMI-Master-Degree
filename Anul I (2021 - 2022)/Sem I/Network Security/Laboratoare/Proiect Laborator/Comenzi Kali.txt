@@ -1,0 +1,24 @@
+( Pregătire Sistem:
+sudo updatedb
+sudo apt-get install proxychains
+sudo apt-get install tor
+sudo apt install macchanger
+)
+
+ProxyChains:
+nano /etc/proxychains.conf
+Listă Proxy (căutați proxy free pe net):
+socks5  72.221.196.145	4145
+socks5  70.166.167.55	57745
+CTRL+O; CTRL+X
+proxychains firefox ipaddress.com
+
+TOR:
+service tor start
+service tor status
+proxychains firefox ipaddress.com
+
+MacChanger:
+ifconfig
+macchanger -r eth0
+macchanger -s eth0

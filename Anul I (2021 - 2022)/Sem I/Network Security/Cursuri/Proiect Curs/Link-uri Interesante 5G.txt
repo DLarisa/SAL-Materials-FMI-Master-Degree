@@ -1,0 +1,17 @@
+https://thehackernews.com/2021/03/new-5g-flaw-exposes-priority-networks.html
+
+https://5g.systemsapproach.org/arch.html
+
+https://www.5gfundamental.com/2021/02/5g-guti-supi-suci.html
+
+http://5gblogs.com/concealing-of-supi-into-suci/
+
+https://nickvsnetworking.com/5g-subscriber-identifiers-suci-supi/
+
+https://www.techplayon.com/5g-identifiers-supi-and-suci/
+
+https://www.linkedin.com/pulse/5g-supi-suci-identifiers-reza-gholami/
+
+https://www.ericsson.com/en/blog/2021/4/3gpp-release-16-5g-phase-2-security-ran
+
+https://www.lteprotocol.com/2020/02/5g-protocol-stack.html
