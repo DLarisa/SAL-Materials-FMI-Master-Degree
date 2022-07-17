@@ -1,0 +1,97 @@
+#####e) EIGRP (autonomous-system)#########
+========R11=========================
+en
+conf term
+router eigrp 10
+network 172.16.0.8 0.0.0.3
+network 192.168.0.12 0.0.0.3
+do wr
+========R21=========================
+en
+conf term
+router eigrp 10
+network 172.16.0.16 0.0.0.3
+network 192.168.0.28 0.0.0.3
+do wr
+========R31=========================
+en
+conf term
+router eigrp 10
+network 172.16.0.24 0.0.0.3
+network 192.168.0.44 0.0.0.3
+do wr
+========R1=========================
+en
+conf term
+router eigrp 10
+network 192.168.0.12 0.0.0.3
+network 10.0.0.28 0.0.0.3
+network 10.0.0.92 0.0.0.3
+do wr
+========R2=========================
+en
+conf term
+router eigrp 10
+network 192.168.0.28 0.0.0.3
+network 10.0.0.28 0.0.0.3
+network 10.0.0.60 0.0.0.3
+do wr
+========R3=========================
+en
+conf term
+router eigrp 10
+network 192.168.0.44 0.0.0.3
+network 10.0.0.60 0.0.0.3
+network 10.0.0.92 0.0.0.3
+do wr
+
+
+
+
+
+#####f) OSPF (process ID + area)#########
+========R11=========================
+en
+conf term
+router ospf 10
+network 172.16.0.8 0.0.0.3 area 0
+network 192.168.0.12 0.0.0.3 area 0
+do wr
+========R21=========================
+en
+conf term
+router ospf 10
+network 172.16.0.16 0.0.0.3 area 0
+network 192.168.0.28 0.0.0.3 area 0
+do wr
+========R31=========================
+en
+conf term
+router ospf 10
+network 172.16.0.24 0.0.0.3 area 0
+network 192.168.0.44 0.0.0.3 area 0
+do wr
+========R1=========================
+en
+conf term
+router ospf 10
+network 192.168.0.12 0.0.0.3 area 0
+network 10.0.0.28 0.0.0.3 area 0
+network 10.0.0.92 0.0.0.3 area 0
+do wr
+========R2=========================
+en
+conf term
+router ospf 10
+network 192.168.0.28 0.0.0.3 area 0
+network 10.0.0.28 0.0.0.3 area 0
+network 10.0.0.60 0.0.0.3 area 0
+do wr
+========R3=========================
+en
+conf term
+router ospf 10
+network 192.168.0.44 0.0.0.3 area 0
+network 10.0.0.60 0.0.0.3 area 0
+network 10.0.0.92 0.0.0.3 area 0
+do wr

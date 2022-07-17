@@ -1,0 +1,9 @@
+﻿cl : command line warning D9035: option 'Gm' has been deprecated and will be removed in a future release
+  test_winhttp.cpp
+C:\Users\Larisa\Desktop\Ex\test_winhttp.cpp(9,1): warning C4005: 'MAXCHAR': macro redefinition
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winnt.h(1192): message : see previous definition of 'MAXCHAR'
+C:\Users\Larisa\Desktop\Ex\test_winhttp.cpp(166,14): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\Larisa\Desktop\Ex\test_winhttp.cpp(197,20): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\Larisa\Desktop\Ex\test_winhttp.cpp(207,30): warning C4996: 'strtok': This function or variable may be unsafe. Consider using strtok_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+test_winhttp.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/SAFESEH' specification
+  Winhttp.vcxproj -> C:\Users\Larisa\Desktop\Ex\Debug\Winhttp.exe

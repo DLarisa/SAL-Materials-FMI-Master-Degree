@@ -1,0 +1,14 @@
+en
+conf t
+ip access-list extended HTTP_ONLY   --- putem numi oricum
+permit tcp ~NA_Rețea~ ~wildcard~ host ~IP_destinație~ eq www
+====== creez ACL care permite www pt toată rețeaua NA_Rețea cu o unică destinație IP_destinație
+
+
+====== !!! Neapărat și ICMP=ping+... =====
+permit icmp ~NA_Rețea~ ~wildcard~ host ~IP_destinație~
+
+
+===== Aplic ACL pe Interfața Corectă (Routerul se leagă cu NA_Rețea pe ce interfață?)
+interface gig0/1
+ip access-group HTTP_ONLY in

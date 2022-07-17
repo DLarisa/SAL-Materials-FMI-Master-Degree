@@ -1,0 +1,22 @@
+============    RA    ===============
+en
+conf t
+interface tunnel 0
+ip address 10.10.10.1 255.255.255.252   --- cerință (IP+1 VPN)
+tunnel source s0/0/0                    --- spre device/rețea comună (pot fi identice)
+tunnel destination 209.165.122.2        --- IP RB în fa0/0 (sursa lui RB)
+tunnel mode gre ip
+no sh
+ip route 192.168.2.0 255.255.255.0 10.10.10.2  --- RA se conectează la NA-ul SB cu SubnetMask-ul(SB-ului) prin tunelul lui RB; IP+2 VPN
+do wr
+============    RB    ===============
+en
+conf t
+interface tunnel 0
+ip address 10.10.10.2 255.255.255.252    --- cerință (IP+2 VPN)
+tunnel source fa0/0                      --- spre device/rețea comună (pot fi identice)
+tunnel destination 64.103.211.2          --- IP RA în s0/0/0 (sursa lui RA)
+tunnel mode gre ip
+no sh
+ip route 192.168.1.0 255.255.255.0 10.10.10.1  --- RB se conectează la NA-ul SA cu SubnetMask-ul(SA-ului) prin tunelul lui RA; IP+1 VPN
+do wr

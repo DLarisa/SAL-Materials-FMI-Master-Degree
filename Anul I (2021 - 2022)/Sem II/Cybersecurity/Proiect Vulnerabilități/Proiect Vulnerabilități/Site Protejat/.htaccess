@@ -1,0 +1,8 @@
+DirectoryIndex start.html
+Options -Indexes
+<IfModule mod_headers.c>
+  Header set X-XSS-Protection "1; mode=block"
+  Header set X-Frame-Options DENY
+  Header set X-Content-Security-Policy "allow 'self';"
+  Header set X-Content-Type-Options "nosniff"
+</IfModule>

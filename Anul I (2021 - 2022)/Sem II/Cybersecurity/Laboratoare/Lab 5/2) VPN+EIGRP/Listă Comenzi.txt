@@ -1,0 +1,285 @@
+========S_R1=========================
+en
+conf term
+no ip domain-lookup
+security passwords min-length 10
+login block-for 120 attempts 3 within 60
+enable secret cisco12345
+banner login #No access for unauthorized persons!#
+banner motd #no news is good news!#
+line console 0 
+password ciscoconpass
+login
+logging synchronous 
+exec-timeout 0 0
+line vty 0 15 
+password ciscovtypass
+login
+logging synchronous
+exec-timeout 0 0
+no cdp run
+hostname S_R1
+interf fa1/0
+description "S_R2 connection"
+ip address 80.80.80.29 255.255.255.252
+no sh
+interf fa0/1
+description "S_R3 connection"
+ip address 80.80.80.25 255.255.255.252
+no sh
+interf fa1/1
+description "S_SW connection"
+ip address 80.80.80.1 255.255.255.248
+no sh
+router eigrp 1
+network 80.80.80.0 0.0.0.7
+network 80.80.80.28 0.0.0.3
+network 80.80.80.24 0.0.0.3
+do wr
+========S_R2=========================
+en
+conf term
+no ip domain-lookup
+security passwords min-length 10
+login block-for 120 attempts 3 within 60
+enable secret cisco12345
+banner login #No access for unauthorized persons!#
+banner motd #no news is good news!#
+line console 0 
+password ciscoconpass
+login
+logging synchronous 
+exec-timeout 0 0
+line vty 0 15 
+password ciscovtypass
+login
+logging synchronous
+exec-timeout 0 0
+no cdp run
+hostname S_R2
+interf fa0/1
+description "S_R1 connection"
+ip address 80.80.80.30 255.255.255.252
+no sh
+interf fa0/0
+description "S_R3 connection"
+ip address 80.80.80.21 255.255.255.252
+no sh
+interf fa1/1
+description "S_SW connection"
+ip address 80.80.80.2 255.255.255.248
+no sh
+interf Se0/2/0
+description "Serial connection"
+ip address 80.80.80.50 255.255.255.252
+no sh
+router eigrp 1
+network 80.80.80.0 0.0.0.7
+network 80.80.80.28 0.0.0.3
+network 80.80.80.20 0.0.0.3
+network 80.80.80.48 0.0.0.3
+do wr
+========S_R3=========================
+en
+conf term
+no ip domain-lookup
+security passwords min-length 10
+login block-for 120 attempts 3 within 60
+enable secret cisco12345
+banner login #No access for unauthorized persons!#
+banner motd #no news is good news!#
+line console 0 
+password ciscoconpass
+login
+logging synchronous 
+exec-timeout 0 0
+line vty 0 15 
+password ciscovtypass
+login
+logging synchronous
+exec-timeout 0 0
+no cdp run
+hostname S_R3
+interf fa0/0
+description "S_R1 connection"
+ip address 80.80.80.26 255.255.255.252
+no sh
+interf fa0/1
+description "S_R2 connection"
+ip address 80.80.80.22 255.255.255.252
+no sh
+interf fa1/1
+description "S_SW connection"
+ip address 80.80.80.3 255.255.255.248
+no sh
+interf fa1/0
+description "Guest connection"
+ip address 80.80.80.17 255.255.255.252
+no sh
+router eigrp 1
+network 80.80.80.0 0.0.0.7
+network 80.80.80.24 0.0.0.3
+network 80.80.80.20 0.0.0.3
+network 80.80.80.16 0.0.0.3
+do wr
+========S_Guest=========================
+80.80.80.18
+255.255.255.252
+80.80.80.17
+========Server_WWW=========================
+80.80.80.4
+255.255.255.248
+80.80.80.2
+###############################################
+
+========R_R1=========================
+en
+conf term
+no ip domain-lookup
+security passwords min-length 10
+login block-for 120 attempts 3 within 60
+enable secret cisco12345
+banner login #No access for unauthorized persons!#
+banner motd #no news is good news!#
+line console 0 
+password ciscoconpass
+login
+logging synchronous 
+exec-timeout 0 0
+line vty 0 15 
+password ciscovtypass
+login
+logging synchronous
+exec-timeout 0 0
+no cdp run
+hostname R_R1
+interf fa0/1
+description "R_R2 connection"
+ip address 80.80.80.45 255.255.255.252
+no sh
+interf fa0/0
+description "R_R3 connection"
+ip address 80.80.80.41 255.255.255.252
+no sh
+interf fa1/1
+description "R_SW connection"
+ip address 80.80.80.9 255.255.255.248
+no sh
+router eigrp 1
+network 80.80.80.8 0.0.0.7
+network 80.80.80.44 0.0.0.3
+network 80.80.80.40 0.0.0.3
+do wr
+========R_R2=========================
+en
+conf term
+no ip domain-lookup
+security passwords min-length 10
+login block-for 120 attempts 3 within 60
+enable secret cisco12345
+banner login #No access for unauthorized persons!#
+banner motd #no news is good news!#
+line console 0 
+password ciscoconpass
+login
+logging synchronous 
+exec-timeout 0 0
+line vty 0 15 
+password ciscovtypass
+login
+logging synchronous
+exec-timeout 0 0
+no cdp run
+hostname R_R2
+interf fa1/0
+description "R_R1 connection"
+ip address 80.80.80.46 255.255.255.252
+no sh
+interf fa0/1
+description "R_R3 connection"
+ip address 80.80.80.37 255.255.255.252
+no sh
+interf fa1/1
+description "R_SW connection"
+ip address 80.80.80.10 255.255.255.248
+no sh
+interf Se0/2/0
+description "Serial connection"
+ip address 80.80.80.49 255.255.255.252
+no sh
+router eigrp 1
+network 80.80.80.8 0.0.0.7
+network 80.80.80.44 0.0.0.3
+network 80.80.80.36 0.0.0.3
+network 80.80.80.48 0.0.0.3
+do wr
+========R_R3=========================
+en
+conf term
+no ip domain-lookup
+security passwords min-length 10
+login block-for 120 attempts 3 within 60
+enable secret cisco12345
+banner login #No access for unauthorized persons!#
+banner motd #no news is good news!#
+line console 0 
+password ciscoconpass
+login
+logging synchronous 
+exec-timeout 0 0
+line vty 0 15 
+password ciscovtypass
+login
+logging synchronous
+exec-timeout 0 0
+no cdp run
+hostname R_R3
+interf fa0/1
+description "R_R1 connection"
+ip address 80.80.80.42 255.255.255.252
+no sh
+interf fa0/0
+description "R_R2 connection"
+ip address 80.80.80.38 255.255.255.252
+no sh
+interf fa1/1
+description "R_SW connection"
+ip address 80.80.80.11 255.255.255.248
+no sh
+interf fa1/0
+description "Guest connection"
+ip address 80.80.80.33 255.255.255.252
+no sh
+router eigrp 1
+network 80.80.80.8 0.0.0.7
+network 80.80.80.36 0.0.0.3
+network 80.80.80.40 0.0.0.3
+network 80.80.80.32 0.0.0.3
+do wr
+========R_Guest=========================
+80.80.80.34
+255.255.255.252
+80.80.80.33
+========Server_BD=========================
+80.80.80.12
+255.255.255.248
+80.80.80.10
+
+=================================VPN Tunnel =====================================
+R_R3
+interface tunnel 0
+ip address 192.168.10.1 255.255.255.252
+tunnel source fa0/0
+tunnel destination 80.80.80.50
+tunnel mode gre ip
+no sh
+ip route 80.80.80.0 255.255.255.248 192.168.10.2
+
+S_R2
+interface tunnel 0
+ip address 192.168.10.2 255.255.255.252
+tunnel source Se0/2/0
+tunnel destination 80.80.80.38
+tunnel mode gre ip
+no sh
+ip route 80.80.80.32 255.255.255.252 192.168.10.1

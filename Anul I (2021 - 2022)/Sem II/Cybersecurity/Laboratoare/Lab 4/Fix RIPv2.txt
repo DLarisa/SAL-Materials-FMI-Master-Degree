@@ -1,0 +1,5 @@
+conf t
+router rip
+no network 172.26.0.0
+network 172.16.0.0
+do wr

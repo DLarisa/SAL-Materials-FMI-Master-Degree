@@ -1,0 +1,16 @@
+en
+conf t
+--------------
+access-list ?   --- o determine the first valid number for an extended access list
+--------------   (FTP uses TCP)
+access-list 100 permit tcp ~NA_Rețea~ ~wildcard~ host ~IP_destinație~ eq ftp 
+====== creez ACL care permite ftp pt toată rețeaua NA_Rețea cu o unică destinație IP_destinație
+
+
+====== !!! Neapărat și ICMP=ping+... =====
+access-list 100 permit icmp ~NA_Rețea~ ~wildcard~ host ~IP_destinație~
+
+
+===== Aplic ACL pe Interfața Corectă (Routerul se leagă cu NA_Rețea pe ce interfață?)
+interface gig0/0
+ip access-group 100 in

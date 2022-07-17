@@ -1,0 +1,31 @@
+================EX3====================
+ip access-list extended ssh-restriction
+ permit tcp host 80.80.0.2 10.0.0.136 0.0.0.3 eq 22     --- ORICE ALTCEVA E RESTRICȚIONAT (ÎN AFARĂ DE SSH)
+ permit tcp host 80.80.0.2 192.168.0.136 0.0.0.3 eq 22
+ 
+interface GigabitEthernet0/2                --- PORTUL DINTRE PC_ADMIN
+ ip access-group ssh-restriction in         --- TRAFICUL CARE INTRĂ ÎN ROUTER
+
+
+
+ ================RouterD1====================
+ip access-list extended dns-protection
+ permit tcp any host 10.0.0.138 eq domain
+ permit udp any host 10.0.0.138 eq domain
+ permit ip host 192.168.0.138 host 10.0.0.138
+
+
+interface GigabitEthernet0/0
+ ip access-group dns-protection out
+
+
+
+ ================RouterD2====================
+ip access-list extended web-protection
+ permit tcp any host 192.168.0.138 eq www
+ permit tcp any host 192.168.0.138 eq 443
+ permit ip host 10.0.0.138 host 192.168.0.138
+
+interface GigabitEthernet0/0
+ ip access-group web-protection out
+ =================================================

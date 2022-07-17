@@ -1,0 +1,22 @@
+================OSPF<->EIGRP====================
+en
+conf t
+router eigrp 1
+redistribute ospf 1 metric 10000 100 255 1 1500
+
+router ospf 1
+log-adjacency-changes ???
+redistribute eigrp 1 subnets 
+do wr
+ 
+ ================OSPF<->RIPv2====================
+en
+conf t
+router rip
+redistribute ospf 1 metric 5
+
+router ospf 1
+log-adjacency-changes  ???
+redistribute rip subnets 
+do wr
+ =================================================

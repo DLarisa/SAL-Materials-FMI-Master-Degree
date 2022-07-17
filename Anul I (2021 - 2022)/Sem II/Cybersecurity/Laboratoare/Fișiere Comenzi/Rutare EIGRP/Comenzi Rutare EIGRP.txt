@@ -1,0 +1,7 @@
+en
+conf term
+router eigrp 10
+----- REPETĂ ---- START
+network 192.168.0.12 0.0.0.3  --- MODIFICĂ (NA device conectat și 255.255.255.255-mască device conectat)
+----- REPETĂ ---- END
+do wr

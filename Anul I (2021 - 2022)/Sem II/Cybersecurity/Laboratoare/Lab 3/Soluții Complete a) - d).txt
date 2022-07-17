@@ -1,0 +1,302 @@
+#####a) + b) #########
+========R11=========================
+
+en
+conf term
+no ip domain-lookup
+service password-encryption
+security passwords min-length 10
+login block-for 120 attempts 3 within 60
+enable secret cisco12345
+banner login #No access for unauthorized persons!#
+banner motd #no news is good news!#
+line console 0 
+password ciscoconpass
+login
+logging synchronous 
+exec-timeout 0 0
+line vty 0 15 
+password ciscovtypass
+login
+logging synchronous
+exec-timeout 0 0
+no cdp run
+hostname R11
+interf gig0/0
+description "R1 connection"
+ip address 192.168.0.14 255.255.255.252
+no sh
+interf gig0/1
+description "localhost connection"
+ip address 172.16.0.9 255.255.255.252
+no sh
+do wr
+========PC1=========================
+172.16.0.10
+255.255.255.252
+172.16.0.9
+========R21=========================
+
+en
+conf term
+no ip domain-lookup
+security passwords min-length 10
+login block-for 120 attempts 3 within 60
+enable secret cisco12345
+banner login #No access for unauthorized persons!#
+banner motd #no news is good news!#
+line console 0 
+password ciscoconpass
+login
+logging synchronous 
+exec-timeout 0 0
+line vty 0 15 
+password ciscovtypass
+login
+logging synchronous
+exec-timeout 0 0
+no cdp run
+hostname R21
+interf gig0/0
+description "R2 connection"
+ip address 192.168.0.30 255.255.255.252
+no sh
+interf gig0/1
+description "localhost connection"
+ip address 172.16.0.17 255.255.255.252
+no sh
+do wr
+========PC2=========================
+172.16.0.18
+255.255.255.252
+172.16.0.17
+========R31=========================
+
+en
+conf term
+no ip domain-lookup
+security passwords min-length 10
+login block-for 120 attempts 3 within 60
+enable secret cisco12345
+banner login #No access for unauthorized persons!#
+banner motd #no news is good news!#
+line console 0 
+password ciscoconpass
+login
+logging synchronous 
+exec-timeout 0 0
+line vty 0 15 
+password ciscovtypass
+login
+logging synchronous
+exec-timeout 0 0
+no cdp run
+hostname R31
+interf gig0/0
+description "R3 connection"
+ip address 192.168.0.46 255.255.255.252
+no sh
+interf gig0/1
+description "localhost connection"
+ip address 172.16.0.25 255.255.255.252
+no sh
+do wr
+========PC3=========================
+172.16.0.26
+255.255.255.252
+172.16.0.25
+========R1=========================
+
+en
+conf term
+no ip domain-lookup
+security passwords min-length 10
+login block-for 120 attempts 3 within 60
+enable secret cisco12345
+banner login #No access for unauthorized persons!#
+banner motd #no news is good news!#
+line console 0 
+password ciscoconpass
+login
+logging synchronous 
+exec-timeout 0 0
+line vty 0 15 
+password ciscovtypass
+login
+logging synchronous
+exec-timeout 0 0
+no cdp run
+hostname R1
+interf gig0/0
+description "R2 connection"
+ip address 10.0.0.29 255.255.255.252
+no sh
+interf gig0/1
+description "R3 connection"
+ip address 10.0.0.93 255.255.255.252
+no sh
+interf gig0/2
+description "local router R11 connection"
+ip address 192.168.0.13 255.255.255.252
+no sh
+do wr
+========R2=========================
+
+en
+conf term
+no ip domain-lookup
+security passwords min-length 10
+login block-for 120 attempts 3 within 60
+enable secret cisco12345
+banner login #No access for unauthorized persons!#
+banner motd #no news is good news!#
+line console 0 
+password ciscoconpass
+login
+logging synchronous 
+exec-timeout 0 0
+line vty 0 15 
+password ciscovtypass
+login
+logging synchronous
+exec-timeout 0 0
+no cdp run
+hostname R2
+interf gig0/0
+description "R3 connection"
+ip address 10.0.0.61 255.255.255.252
+no sh
+interf gig0/1
+description "R1 connection"
+ip address 10.0.0.30 255.255.255.252
+no sh
+interf gig0/2
+description "local router R21 connection"
+ip address 192.168.0.29 255.255.255.252
+no sh
+do wr
+
+========R3=========================
+
+en
+conf term
+no ip domain-lookup
+security passwords min-length 10
+login block-for 120 attempts 3 within 60
+enable secret cisco12345
+banner login #No access for unauthorized persons!#
+banner motd #no news is good news!#
+line console 0 
+password ciscoconpass
+login
+logging synchronous 
+exec-timeout 0 0
+line vty 0 15 
+password ciscovtypass
+login
+logging synchronous
+exec-timeout 0 0
+no cdp run
+hostname R3
+interf gig0/0
+description "R1 connection"
+ip address 10.0.0.94 255.255.255.252
+no sh
+interf gig0/1
+description "R2 connection"
+ip address 10.0.0.62 255.255.255.252
+no sh
+interf gig0/2
+description "local router R31 connection"
+ip address 192.168.0.45 255.255.255.252
+no sh
+do wr
+#####c) #########
+========R11=========================
+en
+conf term
+ip route 0.0.0.0 0.0.0.0 gig0/0
+do wr
+========R21=========================
+en
+conf term
+ip route 0.0.0.0 0.0.0.0 gig0/0
+do wr
+========R31=========================
+en
+conf term
+ip route 0.0.0.0 0.0.0.0 gig0/0
+do wr
+========R1=========================
+en
+conf term
+ip route 0.0.0.0 0.0.0.0 gig0/0
+ip route 172.16.0.8 255.255.255.252 gig0/2
+do wr
+========R2=========================
+en
+conf term
+ip route 0.0.0.0 0.0.0.0 gig0/0
+ip route 172.16.0.16 255.255.255.252 gig0/2
+do wr
+========R3=========================
+en
+conf term
+ip route 0.0.0.0 0.0.0.0 gig0/0
+ip route 172.16.0.24 255.255.255.252 gig0/2
+do wr
+
+#####d) #########
+========R11=========================
+en
+conf term
+router rip
+version 2
+network 172.16.0.8
+network 192.168.0.12
+do wr
+========R21=========================
+en
+conf term
+router rip
+version 2
+network 172.16.0.16
+network 192.168.0.28
+do wr
+========R31=========================
+en
+conf term
+router rip
+version 2
+network 172.16.0.24
+network 192.168.0.44
+do wr
+========R1=========================
+en
+conf term
+router rip
+version 2
+network 192.168.0.12
+network 10.0.0.28
+network 10.0.0.92
+do wr
+========R2=========================
+en
+conf term
+router rip
+version 2
+network 192.168.0.28
+network 10.0.0.28
+network 10.0.0.60
+do wr
+========R3=========================
+en
+conf term
+router rip
+version 2
+network 192.168.0.44
+network 10.0.0.60
+network 10.0.0.92
+do wr
+
+!!! no auto-summary

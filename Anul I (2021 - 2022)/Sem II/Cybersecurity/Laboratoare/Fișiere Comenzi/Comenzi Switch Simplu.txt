@@ -1,0 +1,7 @@
+en
+conf t
+ip default-gateway ~IP_ROUTER~  ------ MODIFICĂ
+interface vlan1
+ip address ~IP_SWITCH~ ~MASCĂ_REȚEA~  ------MODIFICĂ
+no sh
+do wr

@@ -1,0 +1,19 @@
+==============R1===========
+ip access-list standard ADMIN_VTY
+permit 192.168.2.50
+line vty 0 4
+access-class ADMIN_VTY in
+
+=============R2=========
+access-list 10 remark ACL_TO_PINK_LAN
+access-list 10 permit host 192.168.2.50
+access-list 10 permit 192.168.1.0 0.0.0.127
+access-list 10 permit 172.16.1.0 0.0.0.255
+access-list 20 remark ACL_TO_BLUE_LAN
+access-list 20 permit host 192.168.1.100
+access-list 20 deny 192.168.1.0 0.0.0.255
+access-list 20 permit any
+interface gigabitEthernet0/0
+ip access-group 20 out
+interface gigabitEthernet0/1
+ip access-group 10 out

@@ -1,0 +1,2 @@
+- vvar -> variabile folosite de vdso
+- vsyscall -> codul pentru funtii virtuale

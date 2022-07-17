@@ -1,0 +1,383 @@
+========Router0=========================
+en
+conf term
+no ip domain-lookup
+security passwords min-length 10
+login block-for 120 attempts 3 within 60
+enable secret cisco12345
+banner login #No access for unauthorized persons!#
+banner motd #no news is good news!#
+line console 0 
+password ciscoconpass
+login
+logging synchronous 
+exec-timeout 0 0
+line vty 0 15 
+password ciscovtypass
+login
+logging synchronous
+exec-timeout 0 0
+no cdp run
+hostname Router0
+interf gig0/2
+description "Router2 connection"
+ip address 10.0.0.21 255.255.255.252
+no sh
+interf gig0/1
+description "Router1 connection"
+ip address 10.0.0.17 255.255.255.252
+no sh
+interf gig0/0
+description "Central connection R2"
+ip address 10.0.0.9 255.255.255.248
+no sh
+router ospf 1
+network 10.0.0.8 0.0.0.7 area 0
+network 10.0.0.16 0.0.0.3 area 0
+network 10.0.0.20 0.0.0.3 area 0
+do wr
+========Router1=========================
+en
+conf term
+no ip domain-lookup
+security passwords min-length 10
+login block-for 120 attempts 3 within 60
+enable secret cisco12345
+banner login #No access for unauthorized persons!#
+banner motd #no news is good news!#
+line console 0 
+password ciscoconpass
+login
+logging synchronous 
+exec-timeout 0 0
+line vty 0 15 
+password ciscovtypass
+login
+logging synchronous
+exec-timeout 0 0
+no cdp run
+hostname Router1
+interf gig0/2
+description "Local connection"
+ip address 10.0.0.33 255.255.255.252
+no sh
+interf gig0/1
+description "Router0 connection"
+ip address 10.0.0.18 255.255.255.252
+no sh
+interf gig0/0
+description "Central connection R1"
+ip address 10.0.0.1 255.255.255.248
+no sh
+interface tunnel 0
+ip address 172.16.0.1 255.255.255.252
+tunnel source gig0/0
+tunnel destination 10.0.0.5
+tunnel mode gre ip
+no sh 
+router ospf 1
+network 10.0.0.0 0.0.0.7 area 0
+network 10.0.0.16 0.0.0.3 area 0
+network 10.0.0.32 0.0.0.3 area 0
+ip route 10.0.0.36 255.255.255.252 172.16.0.2
+do wr
+========Router2=========================
+en
+conf term
+no ip domain-lookup
+security passwords min-length 10
+login block-for 120 attempts 3 within 60
+enable secret cisco12345
+banner login #No access for unauthorized persons!#
+banner motd #no news is good news!#
+line console 0 
+password ciscoconpass
+login
+logging synchronous 
+exec-timeout 0 0
+line vty 0 15 
+password ciscovtypass
+login
+logging synchronous
+exec-timeout 0 0
+no cdp run
+hostname Router2
+interf gig0/0
+description "Router0 connection"
+ip address 10.0.0.22 255.255.255.252
+no sh
+interf gig0/1
+description "Central connection R1"
+ip address 10.0.0.2 255.255.255.248
+no sh
+router ospf 1
+network 10.0.0.0 0.0.0.7 area 0
+network 10.0.0.20 0.0.0.3 area 0
+do wr
+========Router3=========================
+en
+conf term
+no ip domain-lookup
+security passwords min-length 10
+login block-for 120 attempts 3 within 60
+enable secret cisco12345
+banner login #No access for unauthorized persons!#
+banner motd #no news is good news!#
+line console 0 
+password ciscoconpass
+login
+logging synchronous 
+exec-timeout 0 0
+line vty 0 15 
+password ciscovtypass
+login
+logging synchronous
+exec-timeout 0 0
+no cdp run
+hostname Router3
+interf gig0/1
+description "Central connection R2"
+ip address 10.0.0.10 255.255.255.248
+no sh
+interf gig0/0
+description "Central connection R1"
+ip address 10.0.0.3 255.255.255.248
+no sh
+router ospf 1
+network 10.0.0.0 0.0.0.7 area 0
+network 10.0.0.8 0.0.0.7 area 0
+do wr
+========Router4=========================
+en
+conf term
+no ip domain-lookup
+security passwords min-length 10
+login block-for 120 attempts 3 within 60
+enable secret cisco12345
+banner login #No access for unauthorized persons!#
+banner motd #no news is good news!#
+line console 0 
+password ciscoconpass
+login
+logging synchronous 
+exec-timeout 0 0
+line vty 0 15 
+password ciscovtypass
+login
+logging synchronous
+exec-timeout 0 0
+no cdp run
+hostname Router4
+interf gig0/1
+description "Central connection R2"
+ip address 10.0.0.11 255.255.255.248
+no sh
+interf gig0/0
+description "Central connection R1"
+ip address 10.0.0.4 255.255.255.248
+no sh
+router ospf 1
+network 10.0.0.0 0.0.0.7 area 0
+network 10.0.0.8 0.0.0.7 area 0
+do wr
+========Router5=========================
+en
+conf term
+no ip domain-lookup
+security passwords min-length 10
+login block-for 120 attempts 3 within 60
+enable secret cisco12345
+banner login #No access for unauthorized persons!#
+banner motd #no news is good news!#
+line console 0 
+password ciscoconpass
+login
+logging synchronous 
+exec-timeout 0 0
+line vty 0 15 
+password ciscovtypass
+login
+logging synchronous
+exec-timeout 0 0
+no cdp run
+hostname Router5
+interf gig0/2
+description "Local connection"
+ip address 10.0.0.37 255.255.255.252
+no sh
+interf gig0/1
+description "Router7 connection"
+ip address 10.0.0.29 255.255.255.252
+no sh
+interf gig0/0
+description "Central connection R1"
+ip address 10.0.0.5 255.255.255.248
+no sh
+interface tunnel 0
+ip address 172.16.0.2 255.255.255.252
+tunnel source gig0/0
+tunnel destination 10.0.0.1
+tunnel mode gre ip
+no sh
+router ospf 1
+network 10.0.0.0 0.0.0.7 area 0
+network 10.0.0.28 0.0.0.3 area 0
+network 10.0.0.36 0.0.0.3 area 0
+ip route 10.0.0.32 255.255.255.252 172.16.0.1
+do wr
+========Router6=========================
+en
+conf term
+no ip domain-lookup
+security passwords min-length 10
+login block-for 120 attempts 3 within 60
+enable secret cisco12345
+banner login #No access for unauthorized persons!#
+banner motd #no news is good news!#
+line console 0 
+password ciscoconpass
+login
+logging synchronous 
+exec-timeout 0 0
+line vty 0 15 
+password ciscovtypass
+login
+logging synchronous
+exec-timeout 0 0
+no cdp run
+hostname Router6
+interf gig0/1
+description "Router7 connection"
+ip address 10.0.0.25 255.255.255.252
+no sh
+interf gig0/0
+description "Central connection R1"
+ip address 10.0.0.6 255.255.255.248
+no sh
+router ospf 1
+network 10.0.0.0 0.0.0.7 area 0
+network 10.0.0.24 0.0.0.3 area 0
+do wr
+========Router7=========================
+en
+conf term
+no ip domain-lookup
+security passwords min-length 10
+login block-for 120 attempts 3 within 60
+enable secret cisco12345
+banner login #No access for unauthorized persons!#
+banner motd #no news is good news!#
+line console 0 
+password ciscoconpass
+login
+logging synchronous 
+exec-timeout 0 0
+line vty 0 15 
+password ciscovtypass
+login
+logging synchronous
+exec-timeout 0 0
+no cdp run
+hostname Router7
+interf gig0/2
+description "Router5 connection"
+ip address 10.0.0.30 255.255.255.252
+no sh
+interf gig0/1
+description "Router6 connection"
+ip address 10.0.0.26 255.255.255.252
+no sh
+interf gig0/0
+description "Central connection R2"
+ip address 10.0.0.12 255.255.255.248
+no sh
+router ospf 1
+network 10.0.0.8 0.0.0.7 area 0
+network 10.0.0.24 0.0.0.3 area 0
+network 10.0.0.28 0.0.0.3 area 0
+do wr
+========Server WWW=========================
+10.0.0.34
+255.255.255.252
+10.0.0.33
+========Server DB=========================
+10.0.0.38
+255.255.255.252
+10.0.0.37
+
+!!! please verify the link lights on switches before running the next commands!!!
+################################SW0#########config+etherchannel###################
+en
+conf term
+no ip domain-lookup
+enable secret cisco12345
+banner motd #no news is good news!#
+line console 0 
+password ciscoconpass
+login
+logging synchronous 
+exec-timeout 0 0
+line vty 0 15 
+password ciscovtypass
+login
+logging synchronous
+exec-timeout 0 0
+no cdp run
+hostname Switch0
+interf fa0/1
+description "Router1 connection"
+interf fa0/2
+description "Router2 connection"
+interf fa0/3
+description "Router4 connection"
+interf fa0/4
+description "Router5 connection"
+interf gig0/1
+description "Router0 connection"
+interface range f0/5-6
+channel-group 1 mode active
+interface port-channel 1
+description "SW1 connection"
+interface vlan1
+ip address 10.0.0.13 255.255.255.248
+no sh
+do wr
+
+################################SW1##################config+etherchannel#########################
+en
+conf term
+no ip domain-lookup
+enable secret cisco12345
+banner motd #no news is good news!#
+line console 0 
+password ciscoconpass
+login
+logging synchronous 
+exec-timeout 0 0
+line vty 0 15 
+password ciscovtypass
+login
+logging synchronous
+exec-timeout 0 0
+no cdp run
+hostname Switch1
+interf fa0/1
+description "Router3 connection"
+interf fa0/2
+description "Router4 connection"
+interf fa0/3
+description "Router5 connection"
+interf fa0/4
+description "Router6 connection"
+interf gig0/1
+description "Router7 connection"
+interface range f0/5-6
+channel-group 1 mode active
+interface port-channel 1
+description "SW1 connection"
+interface vlan1
+ip address 10.0.0.14 255.255.255.248
+no sh
+do wr
+
+

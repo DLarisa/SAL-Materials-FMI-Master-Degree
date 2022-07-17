@@ -1,0 +1,10 @@
+R1(config)#ip access-list extended 192_to_10
+R1(config-ext-nacl)#permit ip any any
+
+R1(config)#interface g0/0
+R1(config-if)#no ip access-group 10_to_172 out
+R1(config-if)#ip access-group 10_to_172 in
+
+R1(config)#ip access-list extended 172_to_192
+R1(config-ext-nacl)#no 10
+R1(config-ext-nacl)#30 permit ip any any

@@ -1,0 +1,4 @@
+http://localhost/controller/editGrade.php?id=127&courseid=10005&grade=1
+-------------------------------------------------
+Inserăm acest URL în pagina web: 
+http://localhost/hacker/hacker_site.html

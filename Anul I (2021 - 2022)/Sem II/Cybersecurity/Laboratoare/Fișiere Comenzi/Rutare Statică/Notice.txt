@@ -1,0 +1,3 @@
+Pentru R11, default e gig0/0, adică spre R1.
+De ce? Deja avem conectivitate cu PC. 
+Noi trebuie să asigurăm că ce primim de la PC, trece mai departe.

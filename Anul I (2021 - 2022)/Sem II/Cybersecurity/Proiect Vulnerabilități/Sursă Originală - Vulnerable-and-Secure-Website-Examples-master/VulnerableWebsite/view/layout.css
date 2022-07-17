@@ -1,0 +1,185 @@
+html {
+    background-color: white;
+}
+
+body {
+    background-color: #eee;
+    width: 800px;
+    margin: auto;
+    padding: 1em;
+}
+
+
+
+
+
+.login {
+  position: relative;
+  margin: 100px auto;
+  width: 370px;
+  height: 315px;
+  background: white;
+  border-radius: 3px;
+}
+.login:before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  bottom: -8px;
+  left: -8px;
+  z-index: -1;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+.login h1 {
+  line-height: 55px;
+  font-size: 24px;
+  font-weight: bold;
+  font-family: 'Open Sans', sans-serif;
+  text-transform: uppercase;
+  color: #fff;
+  text-align: center;
+  background: #1abc9c;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+}
+.login .submit {
+  text-align: center;
+}
+.login p:first-child {
+  margin-top: 30px;
+}
+.login p .remember {
+  float: left;
+}
+.login p .remember label {
+  color: #a7a599;
+  font-size: 12px;
+  cursor: pointer;
+}
+.login p .forgot {
+  float: right;
+  margin-right: 50px;
+}
+.login p .forgot a {
+  color: #a7a599;
+  font-size: 12px;
+  text-decoration: none;
+  font-style: italic;
+  transition: all 0.3s ease-out;
+}
+.login p .forgot a:hover {
+  color: #f2672e;
+}
+
+/*input style*/
+/* === Input Form === */
+::-webkit-input-placeholder {
+  color: #ded9cf;
+  font-family: 'Open Sans';
+}
+
+:-moz-placeholder {
+  color: #ded9cf !important;
+  font-family: 'Open Sans';
+}
+
+.form input[type=text], input[type=password] {
+  font-family: 'Open Sans', Calibri, Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  padding: 10px 15px 10px 55px;
+  position: relative;
+  width: 200px;
+  height: 24px;
+  color: #676056;
+  border: none;
+  background: #f7f3eb;
+  color: #777;
+  transition: color 0.3s ease-out;
+}
+
+.form input[type=text] {
+  margin-bottom: 15px;
+}
+
+.form input[type=text]:hover ~ i,
+.form input[type=password]:hover ~ i {
+  color: #27ae60;
+}
+
+.form input[type=text]:focus ~ i,
+.form input[type=password]:focus ~ i {
+  color: #27ae60;
+}
+
+.form input[type=text]:focus,
+.form input[type=password]:focus,
+.form button[type=submit]:focus {
+  outline: none;
+}
+
+.form input[type=submit] {
+  margin-top: 15px;
+  width: 270px;
+  text-align: center;
+  font-size: 14px;
+  font-family: 'Open Sans',sans-serif;
+  font-weight: bold;
+  padding: 12px 0;
+  letter-spacing: 0;
+  box-shadow: inset 0px 0px 0px 0px #1abc9c;
+  color: #fff;
+  background-color: #16a085;
+  text-shadow: none;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  margin-bottom: 20px;
+  -webkit-animation: shadowFadeOut 0.4s;
+  -moz-animation: shadowFadeOut 0.4s;
+}
+
+.form input[type=submit]:hover, input[type=submit]:focus {
+  color: #fff;
+  box-shadow: inset 0px 46px 0px 0px #1abc9c;
+  -webkit-animation: shadowFade 0.4s;
+  -moz-animation: shadowFade 0.4s;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+#logoarea {
+	text-align: center;
+}
+
+#navigation li {
+	display: inline;
+	padding: 0.5em;
+	background-color: #bbb;
+	border: 3px outset gray;
+	margin-left: 1em;
+	margin-right: 1em;
+}
+
+table th {
+    border-bottom: 1px solid #aaa;
+    text-align: left;
+}
+
+table th,
+table td {
+    padding-right: 1em;
+}

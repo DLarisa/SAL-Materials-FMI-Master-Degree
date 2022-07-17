@@ -1,0 +1,12 @@
+ip access-list extended ACL
+deny tcp host 172.31.1.101 host 64.101.255.254 eq 80
+deny tcp host 172.31.1.101 host 64.101.255.254 eq 443
+deny tcp host 172.31.1.101 host 64.103.255.254 eq 80
+deny tcp host 172.31.1.101 host 64.103.255.254 eq 443
+deny tcp host 172.31.1.102 host 64.101.255.254 eq 21
+deny tcp host 172.31.1.102 host 64.103.255.254 eq 21
+deny icmp host 172.31.1.103 host 64.101.255.254
+deny icmp host 172.31.1.103 host 64.103.255.254
+permit ip any any
+interface g0/0
+ip access-group ACL in

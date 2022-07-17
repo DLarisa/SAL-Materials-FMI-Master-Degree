@@ -1,0 +1,28 @@
+en
+conf term
+no ip domain-lookup
+hostname R11          ------------ MODIFICĂ (nume ruter)
+service password-encryption
+security passwords min-length 10
+login block-for 120 attempts 3 within 60
+enable secret cisco12345
+banner login #No access for unauthorized persons!#
+banner motd #no news is good news!#
+line console 0 
+password ciscoconpass
+login
+logging synchronous 
+exec-timeout 0 0
+line vty 0 15 
+password ciscovtypass
+login
+logging synchronous
+exec-timeout 0 0
+no cdp run
+------------(bucata asta se repetă în funcție de câte device-uri avem)---- START
+interf gig0/0       ------------ MODIFICĂ (interfața cu care se face conexiunea cu celălalt device)
+description "R1 connection"          ------------ MODIFICĂ  (descriere device)
+ip address 192.168.0.14 255.255.255.252        ------------ MODIFICĂ  (IP router nostru în interfață)
+------------(bucata asta se repetă în funcție de câte device-uri avem)---- END
+no sh
+do wr

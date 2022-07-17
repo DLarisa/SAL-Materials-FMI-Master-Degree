@@ -1,0 +1,25 @@
+==============================================LAB 8===========================================================
+============    RA    ===============
+en
+conf t
+interface tunnel 0
+ip address 1.2.3.9 255.255.255.252      --- cerință (IP+1 VPN)
+tunnel source gig0/1                    --- firul spre destinație (pot fi identice)
+tunnel destination 10.20.11.66          --- IP RB în fa0/0 (sursa lui RB)
+tunnel mode gre ip
+no sh
+ip route 10.20.11.72 255.255.255.252 1.2.3.10  --- RA se conectează la NA-ul Serverului_B cu SubnetMask-ul(SB-ului); IP+2 VPN
+do wr
+
+
+============    RB    ===============
+en
+conf t
+interface tunnel 0
+ip address 1.2.3.10 255.255.255.252      --- cerință (IP+2 VPN)
+tunnel source fa0/0                      --- firul spre sursă (pot fi identice)
+tunnel destination 11.14.24.2            --- IP RA în gig0/1 (sursa lui RA)
+tunnel mode gre ip
+no sh
+ip route 11.14.24.0 255.255.255.252 1.2.3.9  --- RB se conectează la NA-ul Serverului_A cu SubnetMask-ul(SA-ului); IP+1 VPN
+do wr

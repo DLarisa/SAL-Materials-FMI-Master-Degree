@@ -1,0 +1,60 @@
+
+
+  <body>
+
+     <pre> <center><h1>Vulnerable Grades Management System</h1></center></pre>
+          <center><h2>Register as a student</h2></center>
+  <style>
+  body {
+    font: 13px/20px "Open Sans", Tahoma, Verdana, sans-serif;
+    color:white;
+     
+  }
+
+
+           
+  /* === Login styles === */
+  .login {
+    position: relative;
+    margin: 100px auto;
+    width: 370px;
+    height: 175px;
+    background: black;
+    border-radius: 3px;
+  }
+  .login:before {
+    content: '';
+    position: absolute;
+    top: -18px;
+    right: -18px;
+    bottom: -18px;
+    left: -18px;
+    z-index: -1;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 9px;
+  }
+
+
+      </style>
+  <body background="backg.jpg">
+
+  <form class="login" method="post" action="/controller/register.php">
+      <fieldset>
+      <dl>
+          <b><dt>Username</dt></b>
+  <input type="text" name="name">
+           <br/><br/>
+      
+      <b><dt>Email Adress</dt></b>
+  <input type="text" name="email">
+           <br/><br/>
+      <b><dt>Password</dt></b>
+  <input type="password" name="pw">
+           <br/><br/>
+       <b><dt>Password</dt></b>
+  <input type="password" name="repw">
+           <br/><br/>
+  <button type="submit" name="submit">register</button>
+      </dl></fieldset>
+  </form>
+  </body>

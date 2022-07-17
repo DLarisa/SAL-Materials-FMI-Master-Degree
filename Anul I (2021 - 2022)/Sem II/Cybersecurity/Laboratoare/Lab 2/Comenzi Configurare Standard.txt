@@ -1,0 +1,41 @@
+Comenzi configurare echipamente (folosim TAB pt autocomplete):
+
+Router>enable
+Router#conf term  --nivelul necesar pentru diferite setari
+
+Router#copy running-config startup-config  --SAVE
+Router#do wr  --SAVE
+
+Router(config)#no ip domain-lookup  -- disable translatarea domain in ip (prevent the router from trying to resolve incorrectly pasted commands);
+Router(config)#hostname NUME_DE_LA_NOI     --redenumire
+Router(config)#service password-encryption --parolele sunt salvate criptat (DOAR ROUTER)
+Router(config)#security passwords min-length 10  (DOAR ROUTER)
+Router(config)#login block-for 30 attempts 3 within 20  (DOAR ROUTER)
+Router(config)#enable password cisco54321 -- parola pentru accesul la comenzile din "conf t"
+Router(config)#enable secret cisco12345 --un level mai ridicat de securitate fata de enable pasword (parola criptata)
+Router(config)#banner login #Accesul persoanelor neautorizate interzis!# --mesajul inainte de autentificare (DOAR ROUTER)
+Router(config)#banner motd #Vineri la ora 16 serverul intra in mentenanta!#  --message-of-the-day mesajul dupa autentificare
+
+Router(config)#line console 0 --parola pe portul de consola
+Router(config-line)#password ciscoconpass
+Router(config-line)#login  --ca un save
+Router(config-line)#logging synchronous -- pentru afisarea mesajelor de logging
+Router(config-line)#exec-timeout 0 0
+
+Router(config-line)#line vty 0 15 --parola pentru telnet
+Router(config-line)#password ciscovtypass
+Router(config-line)#login    --ca un save
+Router(config-line)#logging synchronous
+Router(config-line)#exec-timeout 0 0
+
+Router(config)#interface gigabitethernet 0/0
+			  #ip address x y
+			  #no shutdown
+
+
+Router(config)#no cdp run -- cdp protocol de level 2 trimite pachete pentru a isi identifica vecinii;
+
+A(config-if)#description "legatura cu X"
+A(config-if)#no shutdown  --on (activează legătura)
+
+

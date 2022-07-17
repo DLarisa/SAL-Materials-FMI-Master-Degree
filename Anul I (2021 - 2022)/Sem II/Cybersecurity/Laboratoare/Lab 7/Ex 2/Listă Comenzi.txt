@@ -1,0 +1,4 @@
+RTA(config)#access-list 199 permit tcp 10.101.117.32 0.0.0.15 10.101.117.0 0.0.0.31 eq telnet
+RTA(config)#access-list 199 permit icmp any any
+RTA(config)#interf gig0/2
+RTA(config-if)#ip access-group 199 out

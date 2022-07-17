@@ -1,0 +1,7 @@
+en
+conf term
+ip route 0.0.0.0 0.0.0.0 gig0/0   ---- RUTĂ DEFAULT (packets from any IP address with any subnet mask get sent to gig0/0)
+======(e gig0/0 pentru că interfața asta duce în buclă, în poză linia roșie)====
+ip route 172.16.0.8 255.255.255.252 gig0/2  --- RUTĂ SPECIFICĂ (NA și Masca device conectat pe ruta specifică)
+======(e gig0/2 pentru că interfața asta duce spre frunză. în poză linia mov)
+do wr

@@ -1,0 +1,9 @@
+en
+conf term
+router rip
+version 2
+------ COMANDA SE REPETĂ ---- START
+network 192.168.0.28   ---- MODIFICĂ (aici avem NA-ul device-ului conectat)
+------ COMANDA SE REPETĂ ---- END
+no auto-summary  --- NEAPĂRAT
+do wr

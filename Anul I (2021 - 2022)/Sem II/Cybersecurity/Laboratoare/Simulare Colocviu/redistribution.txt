@@ -1,0 +1,25 @@
+================OSPF<->EIGRP====================
+router eigrp 1
+ redistribute ospf 1 metric 10000 100 255 1 1500 
+ network 10.0.0.140 0.0.0.3
+ network 10.0.0.136 0.0.0.3
+
+router ospf 1
+ log-adjacency-changes
+ redistribute eigrp 1 subnets 
+ network 80.80.0.8 0.0.0.3 area 0
+ network 80.80.0.0 0.0.0.3 area 0
+ 
+ ================OSPF<->RIPv2====================
+ router ospf 1
+ log-adjacency-changes
+ redistribute rip subnets 
+ network 80.80.0.4 0.0.0.3 area 0
+ network 80.80.0.0 0.0.0.3 area 0
+
+router rip
+ version 2
+ redistribute ospf 1 metric 5 
+ network 192.168.0.0
+ no auto-summary
+ =================================================
