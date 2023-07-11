@@ -1,6 +1,8 @@
 # SAL (Master) Materials - FMI, UniBuc (Faculty of Mathematics & Informatics, University of Bucharest)
 This repository contains all the materials and resources that I gathered throughout my time at the SAL master. You may use these materials provided that the source and the author are mentioned.
 
+Here is my dissertation [thesis](https://github.com/DLarisa/Dissertation) for those interested. The title is *Video Steganography* and uses a modified LSB technique for the image side of encryption and DCT+DWT for audio steganography.
+
 ©DLarisa <br/><br/><br/>
 ## *First Year (An I // 2021 - 2022)*:
   - [Advanced Cryptography](https://github.com/DLarisa/SAL-Materials-FMI-Master-Degree/tree/master/Anul%20I%20(2021%20-%202022)/Sem%20I/Advanced%20Cryptography) - **Maths**
