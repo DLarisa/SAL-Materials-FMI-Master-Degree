@@ -1,0 +1,396 @@
+1: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x7ffffffeba10
+
+2: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x7fffff3fc780
+
+3: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x25b
+
+4: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x7fffff7c0700
+
+5: [============== Task 3 ==============]
+What is your name?
+Hello there, 0xd
+
+6: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x70243625
+
+7: [============== Task 3 ==============]
+What is your name?
+Hello there, (nil)
+
+8: [============== Task 3 ==============]
+What is your name?
+Hello there, (nil)
+
+9: [============== Task 3 ==============]
+What is your name?
+Hello there, (nil)
+
+10: [============== Task 3 ==============]
+What is your name?
+Hello there, (nil)
+
+11: [============== Task 3 ==============]
+What is your name?
+Hello there, (nil)
+
+12: [============== Task 3 ==============]
+What is your name?
+Hello there, (nil)
+
+13: [============== Task 3 ==============]
+What is your name?
+Hello there, (nil)
+
+14: [============== Task 3 ==============]
+What is your name?
+Hello there, (nil)
+
+15: [============== Task 3 ==============]
+What is your name?
+Hello there, (nil)
+
+16: [============== Task 3 ==============]
+What is your name?
+Hello there, (nil)
+
+17: [============== Task 3 ==============]
+What is your name?
+Hello there, (nil)
+
+18: [============== Task 3 ==============]
+What is your name?
+Hello there, (nil)
+
+19: [============== Task 3 ==============]
+What is your name?
+Hello there, (nil)
+
+20: [============== Task 3 ==============]
+What is your name?
+Hello there, (nil)
+
+21: [============== Task 3 ==============]
+What is your name?
+Hello there, (nil)
+
+22: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x7ffffffee150
+
+23: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x401281
+
+24: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x401290
+
+25: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x401070
+
+26: [============== Task 3 ==============]
+What is your name?
+Hello there, (nil)
+
+27: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x7fffff0a6690
+
+28: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x401290
+
+29: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x7fffff057830
+
+30: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x1
+
+31: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x7ffffffee238
+
+32: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x1ff625ca0
+
+33: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x40124f
+
+34: [============== Task 3 ==============]
+What is your name?
+Hello there, (nil)
+
+35: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x1781ce133158d0ec
+
+36: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x401070
+
+37: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x7ffffffee230
+
+38: [============== Task 3 ==============]
+What is your name?
+Hello there, (nil)
+
+39: [============== Task 3 ==============]
+What is your name?
+Hello there, (nil)
+
+40: [============== Task 3 ==============]
+What is your name?
+Hello there, 0xf5f3883750716e04
+
+41: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x937e3b419186c70c
+
+42: [============== Task 3 ==============]
+What is your name?
+Hello there, (nil)
+
+43: [============== Task 3 ==============]
+What is your name?
+Hello there, (nil)
+
+44: [============== Task 3 ==============]
+What is your name?
+Hello there, (nil)
+
+45: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x7ffffffee248
+
+46: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x7fffff627168
+
+47: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x7fffff4105fb
+
+48: [============== Task 3 ==============]
+What is your name?
+Hello there, (nil)
+
+49: [============== Task 3 ==============]
+What is your name?
+Hello there, (nil)
+
+50: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x401070
+
+51: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x7ffffffee230
+
+52: [============== Task 3 ==============]
+What is your name?
+Hello there, (nil)
+
+53: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x40109a
+
+54: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x7ffffffee228
+
+55: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x1c
+
+56: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x1
+
+57: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x7ffffffee45f
+
+58: [============== Task 3 ==============]
+What is your name?
+Hello there, (nil)
+
+59: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x7ffffffee484
+
+60: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x7ffffffee494
+
+61: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x7ffffffee4ab
+
+62: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x7ffffffee4b8
+
+63: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x7ffffffee4da
+
+64: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x7ffffffee4e7
+
+65: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x7ffffffee4f6
+
+66: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x7ffffffee4ff
+
+67: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x7ffffffee50a
+
+68: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x7ffffffee517
+
+69: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x7ffffffeeaf9
+
+70: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x7ffffffeeb05
+
+71: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x7ffffffeeb27
+
+72: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x7ffffffeeb3b
+
+73: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x7ffffffeeb5b
+
+74: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x7ffffffeeb65
+
+75: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x7ffffffeeb6d
+
+76: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x7ffffffeeb75
+
+77: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x7ffffffeebb6
+
+78: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x7ffffffeefa3
+
+79: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x7ffffffeefb3
+
+80: [============== Task 3 ==============]
+What is your name?
+Hello there, (nil)
+
+81: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x21
+
+82: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x7ffffffef000
+
+83: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x10
+
+84: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x1f8bfbff
+
+85: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x6
+
+86: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x1000
+
+87: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x11
+
+88: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x64
+
+89: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x3
+
+90: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x400040
+
+91: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x4
+
+92: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x38
+
+93: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x5
+
+94: [============== Task 3 ==============]
+What is your name?
+Hello there, 0xb
+
+95: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x7
+
+96: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x7fffff400000
+
+97: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x8
+
+98: [============== Task 3 ==============]
+What is your name?
+Hello there, (nil)
+
+99: [============== Task 3 ==============]
+What is your name?
+Hello there, 0x9
+

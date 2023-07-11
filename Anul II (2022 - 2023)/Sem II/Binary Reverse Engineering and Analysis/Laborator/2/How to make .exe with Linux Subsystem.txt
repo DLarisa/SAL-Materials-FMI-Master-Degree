@@ -1,0 +1,10 @@
+https://stackoverflow.com/questions/38786014/how-to-compile-executable-for-windows-with-gcc-with-linux-subsystem
+
+
+Then you can create 32-bit Windows executable with:
+i686-w64-mingw32-gcc -o main32.exe main.c
+
+
+
+And 64-bit Windows executable with:
+x86_64-w64-mingw32-gcc -o main64.exe main.c

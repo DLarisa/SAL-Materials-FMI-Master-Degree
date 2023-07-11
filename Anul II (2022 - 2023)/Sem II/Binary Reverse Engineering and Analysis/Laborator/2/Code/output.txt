@@ -1,0 +1,57 @@
+Dump of assembler code for function main:
+Bonus2.c:
+5	{
+   0x0000000000001189 <+0>:	f3 0f 1e fa	endbr64 
+   0x000000000000118d <+4>:	55	push   rbp
+   0x000000000000118e <+5>:	48 89 e5	mov    rbp,rsp
+   0x0000000000001191 <+8>:	48 83 ec 20	sub    rsp,0x20
+   0x0000000000001195 <+12>:	64 48 8b 04 25 28 00 00 00	mov    rax,QWORD PTR fs:0x28
+   0x000000000000119e <+21>:	48 89 45 f8	mov    QWORD PTR [rbp-0x8],rax
+   0x00000000000011a2 <+25>:	31 c0	xor    eax,eax
+
+6		uint64_t secret_value = 0xdeadc0de;
+   0x00000000000011a4 <+27>:	b8 de c0 ad de	mov    eax,0xdeadc0de
+   0x00000000000011a9 <+32>:	48 89 45 f0	mov    QWORD PTR [rbp-0x10],rax
+
+7		uint64_t user_input;
+8		
+9		scanf("%lld", &user_input);
+   0x00000000000011ad <+36>:	48 8d 45 e8	lea    rax,[rbp-0x18]
+   0x00000000000011b1 <+40>:	48 89 c6	mov    rsi,rax
+   0x00000000000011b4 <+43>:	48 8d 3d 49 0e 00 00	lea    rdi,[rip+0xe49]        # 0x2004
+   0x00000000000011bb <+50>:	b8 00 00 00 00	mov    eax,0x0
+   0x00000000000011c0 <+55>:	e8 cb fe ff ff	call   0x1090 <__isoc99_scanf@plt>
+
+10		user_input ^= 0x1337cafe;
+   0x00000000000011c5 <+60>:	48 8b 45 e8	mov    rax,QWORD PTR [rbp-0x18]
+   0x00000000000011c9 <+64>:	48 35 fe ca 37 13	xor    rax,0x1337cafe
+   0x00000000000011cf <+70>:	48 89 45 e8	mov    QWORD PTR [rbp-0x18],rax
+
+11		
+12		if (user_input == secret_value)
+   0x00000000000011d3 <+74>:	48 8b 45 e8	mov    rax,QWORD PTR [rbp-0x18]
+   0x00000000000011d7 <+78>:	48 39 45 f0	cmp    QWORD PTR [rbp-0x10],rax
+   0x00000000000011db <+82>:	75 0e	jne    0x11eb <main+98>
+
+13			puts("Correct!");
+   0x00000000000011dd <+84>:	48 8d 3d 25 0e 00 00	lea    rdi,[rip+0xe25]        # 0x2009
+   0x00000000000011e4 <+91>:	e8 87 fe ff ff	call   0x1070 <puts@plt>
+   0x00000000000011e9 <+96>:	eb 0c	jmp    0x11f7 <main+110>
+
+14		else
+15			puts("Wrong");
+   0x00000000000011eb <+98>:	48 8d 3d 20 0e 00 00	lea    rdi,[rip+0xe20]        # 0x2012
+   0x00000000000011f2 <+105>:	e8 79 fe ff ff	call   0x1070 <puts@plt>
+
+16		
+17		return 0;
+   0x00000000000011f7 <+110>:	b8 00 00 00 00	mov    eax,0x0
+
+18	}
+   0x00000000000011fc <+115>:	48 8b 55 f8	mov    rdx,QWORD PTR [rbp-0x8]
+   0x0000000000001200 <+119>:	64 48 33 14 25 28 00 00 00	xor    rdx,QWORD PTR fs:0x28
+   0x0000000000001209 <+128>:	74 05	je     0x1210 <main+135>
+   0x000000000000120b <+130>:	e8 70 fe ff ff	call   0x1080 <__stack_chk_fail@plt>
+   0x0000000000001210 <+135>:	c9	leave  
+   0x0000000000001211 <+136>:	c3	ret    
+End of assembler dump.

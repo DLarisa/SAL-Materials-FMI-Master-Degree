@@ -1,0 +1,4 @@
+https://www.rapidtables.com/convert/number/hex-to-ascii.html
+https://node-security.com/posts/xor-encryption-cracker/
+https://www.dcode.fr/xor-cipher
+https://idafchev.github.io/crypto/2017/04/13/crypto_part1.html
