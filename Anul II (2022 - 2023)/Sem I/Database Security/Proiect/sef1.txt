@@ -1,0 +1,22 @@
+--------------------------     SEF1     --------------------------
+SET SERVEROUTPUT ON;
+SET ECHO OFF;
+SET VERIFY OFF;
+
+-- Inserare Date în Tabel REȚETA
+insert into sef1.reteta values (1, null, 'Electrocardiograma recomandata', null, 26, 4);
+insert into sef1.reteta values (2, 'CardioPlus', null, 10, 26, 5);
+commit;
+select * from sef1.reteta;
+select * from doctor2.reteta;
+select * from doctor3.reteta;
+select * from doctor4.reteta;
+
+
+-- Audit Standard
+update reteta
+set indicatii = 'Odihna'
+where id_reteta = 2;
+commit;
+insert into doctor2.reteta values (1, null, 'OCT recomandat', null, 21, 1);
+commit;

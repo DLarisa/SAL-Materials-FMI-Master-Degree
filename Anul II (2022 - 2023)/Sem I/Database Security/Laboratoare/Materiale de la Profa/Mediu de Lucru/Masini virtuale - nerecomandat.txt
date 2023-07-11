@@ -1,0 +1,9 @@
+La adresa urmatoare gasiti 2 masini virtuale:
+- Oracle 11g (pe Windows XP) 
+- Oracle 12c (pe Windows 10)
+
+https://drive.google.com/drive/folders/1HnXq1ScuyHLamAa_EPFDLueOzS2WCgfV?usp=sharing
+
+Acestea se deschid cu Oracle VirtualBox.
+
+Recurgeti la acestea doar daca, din anumite motive, nu puteti face o instalare proprie! Pentru aceasta, urmariti fisierul "Instalare Oracle 12c Release 2.pdf".

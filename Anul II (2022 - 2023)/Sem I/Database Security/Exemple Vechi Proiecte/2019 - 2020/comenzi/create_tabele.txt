@@ -1,0 +1,63 @@
+drop table  credential;
+drop table key;
+drop table  job_history;
+drop table employee;
+drop table  department;
+drop table  role;
+drop table  job;
+
+CREATE TABLE department (
+ id number(4) PRIMARY KEY,
+ name varchar2(200));
+ 
+create table credential (
+  id number(4) PRIMARY KEY,
+  email varchar2(100),
+  password varchar2(100),
+  employee_id number(4));
+
+create table employee (
+  id number(4) PRIMARY KEY,
+  first_name varchar2(100),
+  last_name varchar2(100),
+  birth_date date,
+  manager_id number(4),
+  department_id number(4),
+  job_id number(4),
+  role_id number(4));
+  
+  create table role (
+  id number(4) PRIMARY KEY,
+  role_type varchar2(100),
+  description varchar2(100));
+  
+  
+  create table job (
+  id number(4) PRIMARY KEY,
+  salary number(4));
+  
+  create table key (
+  id number(4) PRIMARY KEY,
+  salary number(4),
+  job_id number(4));
+  
+  create table job_history (
+  id number(4) PRIMARY KEY,
+  start_date date,
+  end_date date,
+  job_id number(4),
+  employee_id number(4));
+  
+  alter table credential add constraint fk_credential_id FOREIGN KEY (employee_id) REFERENCES employee(id);
+  alter table employee add constraint fk_employee_department FOREIGN KEY (department_id) REFERENCES department(id);
+  alter table employee add constraint fk_employee_job FOREIGN KEY (job_id) REFERENCES job(id);
+  alter table employee add constraint fk_employee_role  FOREIGN KEY (role_id) REFERENCES role(id);
+  
+  alter table key add constraint fk_key_job_id FOREIGN KEY (job_id) references job(id);
+  alter table job_history add constraint fk_job_history_employee_id FOREIGN KEY (employee_id) references employee(id);
+
+  
+  
+  
+  
+  

@@ -1,0 +1,21 @@
+--------------------------     PACIENT1     --------------------------
+SET SERVEROUTPUT ON;
+SET ECHO OFF;
+SET VERIFY OFF;
+
+insert into clinica_admin.consultatie values (12, sysdate+3, 14, 10, 25, 202);
+commit;
+select * from clinica_admin.consultatie;
+
+
+
+-- Contextul aplicației 
+insert into clinica_admin.consultatie values (12, sysdate, 14, 13, 25, 202);
+update clinica_admin.consultatie set id_procedura = 101 where id_consultatie = 11;
+rollback;
+
+-- SQL Injection
+-- Comportament Normal (Cerere Onesta)
+execute clinica_admin.vede_consultatiile('1234567890');
+-- Injecție
+execute clinica_admin.vede_consultatiile('2 union select * from consultatie');

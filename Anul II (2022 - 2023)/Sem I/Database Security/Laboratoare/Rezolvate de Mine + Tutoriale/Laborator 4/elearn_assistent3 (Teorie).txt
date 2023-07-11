@@ -1,0 +1,5 @@
+-- Teorie
+--2.3
+-- După ce primește drepturi de la admin
+execute elearn_app_admin.delete_spam('avantajos');
+select * from session_privs;

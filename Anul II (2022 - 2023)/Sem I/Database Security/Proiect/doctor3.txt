@@ -1,0 +1,9 @@
+--------------------------     DOCTOR3     --------------------------
+SET SERVEROUTPUT ON;
+SET ECHO OFF;
+SET VERIFY OFF;
+
+-- Inserare Date în Tabel REȚETA
+insert into doctor3.reteta values (1, 'Zabrac, CardioPlus, HelpCardio', 'Cate 2 pastile la fiecare masa', 10, 34, 8);
+commit;
+select * from doctor3.reteta;

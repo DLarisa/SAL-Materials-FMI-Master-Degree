@@ -1,0 +1,15 @@
+--To view actions:
+SELECT * FROM audit.logged_actions;
+
+SELECT apply_functions('avg');
+SELECT apply_functions('sum');
+SELECT apply_functions('count');
+
+-- SQL INJECTION TESTS
+-- Gain access without password
+SELECT login_vn('user1@test.com'';--','la la la');
+-- Dump all users 
+SELECT login_vn('user1@test.com'' OR 1=1;--','la la la');
+
+-- safe login
+SELECT login_safe('user1@test.com', 'pwd1');

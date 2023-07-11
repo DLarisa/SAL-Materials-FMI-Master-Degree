@@ -1,0 +1,677 @@
+--------------------------     CLINICA_ADMIN     --------------------------
+SET SERVEROUTPUT ON;
+SET ECHO OFF;
+SET VERIFY OFF;
+
+
+
+-- Creare users
+create user sef1 identified by sef1;
+create user doctor2 identified by doctor2;
+create user doctor3 identified by doctor3;
+create user doctor4 identified by doctor4;
+create user asistenta1 identified by asistenta1;
+create user asistenta2 identified by asistenta2;
+create user asistenta3 identified by asistenta3;
+create user pacient1 identified by pacient1;
+create user pacient2 identified by pacient2;
+create user pacient3 identified by pacient3;
+create user vizitator identified by vizitator;
+
+
+
+
+
+-- Schemă Tabele
+drop table asistenta cascade constraints;
+drop table pacient cascade constraints;
+drop table doctor cascade constraints;
+drop table sectie cascade constraints;
+drop table procedura cascade constraints;
+drop table consultatie cascade constraints;
+
+----- Creare Tabele
+-- Asistentă
+create table asistenta (
+    id_asistenta     number(5),
+    nume             varchar2(30) not null,
+    prenume          varchar2(30) not null,
+    nr_tel           varchar2(12),
+    mail             varchar2(30),
+    constraint asistenta_pk primary key (id_asistenta)
+);
+
+-- Pacient
+create table pacient (
+    id_pacient       number(5),
+    nume             varchar2(100) not null,
+    prenume          varchar2(100) not null,
+    cnp              varchar2(100) not null,
+    nr_tel           varchar2(100),
+    mail             varchar2(100),
+    sex              varchar2(100) not null,
+    varsta           number not null,
+    constraint pacient_pk primary key (id_pacient)
+);
+
+-- Doctor
+create table doctor (
+    id_doctor        number(5),
+    nume             varchar2(30) not null,
+    prenume          varchar2(30) not null,
+    nr_tel           varchar2(12),
+    mail             varchar2(30),
+    ora_inceput      number(2) not null,
+    ora_final        number(2) not null,
+    id_sectie        number not null,
+    constraint doctor_pk primary key (id_doctor)
+);
+
+-- Secție
+create table sectie (
+    id_sectie        number(5),
+    nume             varchar2(30) not null,
+    id_sef           number not null,
+    constraint sectie_pk primary key (id_sectie)
+);
+
+-- Procedura
+create table procedura (
+    id_procedura     number(5),
+    nume             varchar2(30) not null,
+    pret             number(5) not null,
+    id_sectie        number not null,
+    constraint procedura_pk primary key (id_procedura)
+);
+
+-- Consultație
+create table consultatie (
+    id_consultatie   number(5),
+    data_consultatie date not null,
+    ora              number(2) not null,
+    id_pacient       number not null,
+    id_doctor        number not null,
+    id_procedura     number not null,
+    constraint consultatie_pk primary key (id_consultatie)
+);
+
+-- Rețetă (Fiecare Doctor are un tabel de Rețete)
+create table sef1.reteta (
+    id_reteta        number(5),
+    medicament       varchar2(30),
+    indicatii        varchar2(100),
+    reducere         number(2),
+    id_doctor        number not null,
+    id_consultatie   number not null,
+    constraint reteta_pk primary key (id_reteta)
+);
+
+create table doctor2.reteta (
+    id_reteta        number(5),
+    medicament       varchar2(30),
+    indicatii        varchar2(100),
+    reducere         number(2),
+    id_doctor        number not null,
+    id_consultatie   number not null,
+    constraint reteta_pk primary key (id_reteta)
+);
+
+create table doctor3.reteta (
+    id_reteta        number(5),
+    medicament       varchar2(30),
+    indicatii        varchar2(100),
+    reducere         number(2),
+    id_doctor        number not null,
+    id_consultatie   number not null,
+    constraint reteta_pk primary key (id_reteta)
+);
+
+create table doctor4.reteta (
+    id_reteta        number(5),
+    medicament       varchar2(30),
+    indicatii        varchar2(100),
+    reducere         number(2),
+    id_doctor        number not null,
+    id_consultatie   number not null,
+    constraint reteta_pk primary key (id_reteta)
+);
+
+
+
+----- Inserare de Date în Tabele
+-- Asistentă
+insert into asistenta values (1, 'Popescu', 'Mara', '0727686598', 'mpopescu@clinica.com');
+insert into asistenta values (2, 'Vasilescu', 'Eugen', '0787444021', 'evasilescu@clinica.com');
+insert into asistenta values (3, 'Rosca', 'Ionela', null, 'irosca@clinica.com');
+insert into asistenta values (4, 'Constantinescu', 'Gabriela', '0741325854', null);
+insert into asistenta values (5, 'Manole', 'Mihai', '0741418555', 'mmanole@clinica.com');
+insert into asistenta values (6, 'Bechir', 'Claudia', null, null);
+insert into asistenta values (7, 'Sin', 'Andrei', null, 'asin@clinica.com');
+
+-- Pacient
+insert into pacient values (10, 'Florescu', 'Cristian', '1234567890', '0788596552', 'cris@mail.com', 'M', 24);
+insert into pacient values (11, 'Iacobei', 'Marina', '2485023256', '0785841325', 'marina@mail.com', 'F', 32);
+insert into pacient values (12, 'Matei', 'Crina', '2843020014', '0788132140', 'cri@mail.com', 'F', 54);
+insert into pacient values (13, 'Zimbru', 'Costel', '1582447100', '0755582320', 'z@mail.com', 'M', 66);
+insert into pacient values (14, 'Dinescu', 'Iustin', '1240617402', '0712546328', 'test@mail.com', 'M', 47);
+insert into pacient values (15, 'Duica', 'Lucretia', '2474742031', '0732020159', 'duica@mail.com', 'F', 80);
+insert into pacient values (16, 'Caluiman', 'Barbu', '1854211741', '0743236950', 'barbu@mail.com', 'M', 30);
+
+-- Doctor
+insert into doctor values (20, 'Matei', 'Dan', '0785858320', 'dmatei@clinica.com', 8, 12, 100);
+insert into doctor values (21, 'Bacovei', 'Amalia', null, 'abacovei@clinica.com', 12, 16, 100);
+insert into doctor values (22, 'Traian', 'Delia', null, null, 16, 20, 100);
+insert into doctor values (23, 'Bucur', 'George', '0785426321', null, 10, 14, 100);
+insert into doctor values (24, 'Iocai', 'Virginia', '0744152103', 'viocai@clinica.com', 8, 12, 200);
+insert into doctor values (25, 'Buftea', 'Vasile', null, 'vbuftea@clinica.com', 12, 16, 200);
+insert into doctor values (26, 'Duica', 'Maria', null, null, 16, 20, 200);
+insert into doctor values (27, 'Zimbir', 'Zoe', '0787474147', null, 9, 13, 200);
+insert into doctor values (28, 'Guran', 'Ion', '0746530012', 'iguran@clinica.com', 8, 12, 300);
+insert into doctor values (29, 'Doroftei', 'Aura', null, 'adoroftei@clinica.com', 12, 16, 300);
+insert into doctor values (30, 'Ceata', 'Sonia', null, null, 16, 20, 400);
+insert into doctor values (31, 'Leustean', 'Paul', '0747555222', null, 9, 13, 400);
+insert into doctor values (32, 'Ducati', 'Elena', null, 'educati@clinica.com', 10, 14, 500);
+insert into doctor values (33, 'Gavrisiu', 'Xenia', null, null, 14, 18, 500);
+insert into doctor values (34, 'Tudor', 'Minodora', '0733202125', null, 7, 11, 500);
+
+-- Secție
+insert into sectie values (100, 'Oftalmologie', 20);
+insert into sectie values (200, 'Cardiologie', 26);
+insert into sectie values (300, 'Neurologie', 28);
+insert into sectie values (400, 'Endocrionologie', 30);
+insert into sectie values (500, 'Pneumologie', 33);
+
+-- Procedura
+insert into procedura values (101, 'Control Ochi', 95, 100);
+insert into procedura values (102, 'Procedura Astigmatism', 350, 100);
+insert into procedura values (103, 'Procedura Miopie', 500, 100);
+insert into procedura values (104, 'Extractie corp strain', 700, 100);
+insert into procedura values (105, 'OCT', 280, 100);
+insert into procedura values (201, 'Electrocardiograma', 150, 200);
+insert into procedura values (202, 'Control Inima', 70, 200);
+insert into procedura values (301, 'EMG', 200, 300);
+insert into procedura values (302, 'ENG', 270, 300);
+insert into procedura values (303, 'Ecografie Doppler', 475, 300);
+insert into procedura values (401, 'Ecografie Tiroida', 285, 400);
+insert into procedura values (402, 'Interpretare Analize', 175, 400);
+insert into procedura values (403, 'Ecografie Mamara', 485, 400);
+insert into procedura values (404, 'Ecografie Pelvis', 300, 400);
+insert into procedura values (501, 'Spirometrie', 255, 500);
+insert into procedura values (502, 'Spirometrie cu test bronho.', 657, 500);
+insert into procedura values (503, 'Consultatie', 145, 500);
+
+-- Consultație
+insert into consultatie values (1, sysdate-7, 12, 10, 21, 101);
+insert into consultatie values (2, sysdate-5, 15, 10, 21, 105);
+insert into consultatie values (3, sysdate-4, 14, 10, 21, 103);
+insert into consultatie values (4, sysdate-20, 18, 11, 26, 202);
+insert into consultatie values (5, sysdate-14, 17, 11, 26, 201);
+insert into consultatie values (6, sysdate-15, 9, 12, 28, 303);
+insert into consultatie values (7, sysdate-3, 8, 14, 34, 503);
+insert into consultatie values (8, sysdate-1, 8, 14, 34, 502);
+insert into consultatie values (9, sysdate-3, 14, 15, 33, 501);
+insert into consultatie values (10, sysdate-2, 13, 16, 25, 202);
+insert into consultatie values (11, sysdate-2, 14, 13, 25, 202);
+
+-- Commit
+commit;
+
+
+----- Constrângeri de FK
+alter table doctor add (constraint sectie_fk foreign key (id_sectie) references sectie(id_sectie));
+alter table sectie add (constraint sef_fk foreign key (id_sef) references doctor(id_doctor));
+alter table procedura add (constraint sectie_procedura_fk foreign key (id_sectie) references sectie(id_sectie));
+alter table consultatie add (constraint pacient_fk foreign key (id_pacient) references pacient(id_pacient));
+alter table consultatie add (constraint doctor_fk foreign key (id_doctor) references doctor(id_doctor));
+alter table consultatie add (constraint procedura_fk foreign key (id_procedura) references procedura(id_procedura));
+/*
+alter table sef1.reteta add (constraint sef1_doctor_fk foreign key (id_doctor) references doctor(id_doctor));
+alter table sef1.reteta add (constraint sef1_consultatie_fk foreign key (id_consultatie) references consultatie(id_consultatie));
+alter table doctor2.reteta add (constraint doctor2_doctor_fk foreign key (id_doctor) references doctor(id_doctor));
+alter table doctor2.reteta add (constraint doctor2_consultatie_fk foreign key (id_consultatie) references consultatie(id_consultatie));
+alter table doctor3.reteta add (constraint doctor3_doctor_fk foreign key (id_doctor) references doctor(id_doctor));
+alter table doctor3.reteta add (constraint doctor3_consultatie_fk foreign key (id_consultatie) references consultatie(id_consultatie));
+alter table doctor4.reteta add (constraint doctor4_doctor_fk foreign key (id_doctor) references doctor(id_doctor));
+alter table doctor4.reteta add (constraint doctor4_consultatie_fk foreign key (id_consultatie) references consultatie(id_consultatie));
+*/
+
+
+----- Vizualizare Date din Tabele
+select * from asistenta;
+select * from pacient;
+select * from doctor;
+select * from sectie;
+select * from procedura;
+select * from consultatie;
+
+
+
+
+
+----- Roluri și Privilegii
+-- Creare Roluri
+create role doctor;
+create role sef_sectie;
+create role asistenta;
+create role pacient;
+create role public_general;
+
+--- Alocare Permisiuni
+-- Permisiune de Creare Sesiuni
+grant create session to doctor;
+grant create session to sef_sectie;
+grant create session to asistenta;
+grant create session to pacient;
+grant create session to public_general;
+
+-- Permisiuni Doctor
+grant select on clinica_admin.doctor to doctor;
+grant select on clinica_admin.pacient to doctor;
+grant select on clinica_admin.sectie to doctor;
+grant select on clinica_admin.procedura to doctor;
+grant select on clinica_admin.consultatie to doctor;
+
+-- Permisiuni Șef Secție
+grant select, update on clinica_admin.doctor to sef_sectie;
+grant select on clinica_admin.pacient to sef_sectie;
+grant select on clinica_admin.sectie to sef_sectie;
+grant select, update, insert on clinica_admin.procedura to sef_sectie;
+grant select on clinica_admin.consultatie to sef_sectie;
+
+-- Permisiuni Asistenta
+grant select on clinica_admin.doctor to asistenta;
+grant select on clinica_admin.sectie to asistenta;
+grant select on clinica_admin.procedura to asistenta;
+grant select, update, insert, delete on clinica_admin.consultatie to asistenta;
+
+-- Permisiuni Pacient
+grant select on clinica_admin.doctor to pacient;
+grant select on clinica_admin.pacient to pacient;
+grant select on clinica_admin.sectie to pacient;
+grant select on clinica_admin.procedura to pacient;
+grant select, update, insert, delete on clinica_admin.consultatie to pacient;
+grant select on sef1.reteta to pacient;
+grant select on doctor2.reteta to pacient;
+grant select on doctor3.reteta to pacient;
+grant select on doctor4.reteta to pacient;
+
+-- Permisiuni Vizitator (Public General)
+grant select on clinica_admin.doctor to public_general;
+grant select on clinica_admin.sectie to public_general;
+grant select on clinica_admin.procedura to public_general;
+
+-- Permisiuni speciale pt tabel REȚETA (șefii de secție pot vedea toate rețetele colegilor din subordinea lor)
+grant select, update, insert, delete on sef1.reteta to sef_sectie;
+grant select, update, insert, delete on doctor2.reteta to sef_sectie;
+grant select, update, insert, delete on doctor3.reteta to sef_sectie;
+grant select, update, insert, delete on doctor4.reteta to sef_sectie;
+
+--- Asignare Roluri userilor
+grant doctor to doctor2;
+grant doctor to doctor3;
+grant doctor to doctor4;
+grant sef_sectie to sef1;
+grant asistenta to asistenta1;
+grant asistenta to asistenta2;
+grant asistenta to asistenta3;
+grant pacient to pacient1;
+grant pacient to pacient2;
+grant pacient to pacient3;
+grant public_general to vizitator;
+
+
+-- Informații privilegii
+select * from user_tab_privs;
+
+
+
+
+
+----- Criptare Date
+drop table chei;
+create table chei (
+    id_chei      number,
+    cheie        raw(16) not null,
+    nume_tabel   varchar2(30) not null,
+    constraint pk_chei primary key (id_chei)
+);
+drop table pacient_criptat;
+create table pacient_criptat (
+    id_pacient       varchar2(100),
+    prenume          varchar2(100) not null,
+    cnp              varchar2(100) not null,
+    sex              varchar2(100) not null,
+    integritate      varchar2 (100),
+    constraint pacient_criptat_pk primary key (id_pacient)
+);
+
+-- Procedura va crea un tabel nou care va reține datele criptate cu AES și un hash al datelor tot criptat cu AES
+create or replace procedure criptare_pacient as
+  cheie_crypt raw(16);
+  operation_mode pls_integer;
+  
+  -- cursorul care parcurge liniile tabelului PACIENT
+  cursor c is select * from pacient;
+
+  raw_id raw(100);
+  raw_prenume raw(100);
+  raw_cnp raw(100);
+  raw_sex raw(100);
+  raw_integritate raw(500);
+  
+  encrypt_id raw(100);
+  encrypt_prenume raw(100);
+  encrypt_cnp raw(100);
+  encrypt_sex raw(100);
+  encrypt_integritate raw(500);
+  
+  concat_val varchar2(500);
+  raw_concat_val raw(500);
+begin
+    cheie_crypt := dbms_crypto.randombytes(16);
+    insert into chei values (1, cheie_crypt, 'PACIENT');
+    
+    operation_mode := dbms_crypto.encrypt_aes128 + dbms_crypto.pad_pkcs5 + dbms_crypto.chain_cbc;
+    
+    for i in c loop
+        raw_id := utl_i18n.string_to_raw(i.id_pacient, 'AL32UTF8');
+        raw_prenume := utl_i18n.string_to_raw(i.prenume, 'AL32UTF8');
+        raw_cnp := utl_i18n.string_to_raw(i.cnp, 'AL32UTF8');
+        raw_sex := utl_i18n.string_to_raw(i.sex, 'AL32UTF8');
+        
+        encrypt_id := dbms_crypto.encrypt(raw_id, operation_mode, cheie_crypt);
+        encrypt_prenume := dbms_crypto.encrypt(raw_prenume, operation_mode, cheie_crypt);
+        encrypt_cnp := dbms_crypto.encrypt(raw_cnp, operation_mode, cheie_crypt);
+        encrypt_sex := dbms_crypto.encrypt(raw_sex, operation_mode, cheie_crypt);
+        
+        concat_val := i.id_pacient || i.prenume || i.cnp || i.sex;
+        raw_concat_val := utl_i18n.string_to_raw(concat_val);
+        raw_integritate := dbms_crypto.hash(raw_concat_val, dbms_crypto.hash_md5);
+        encrypt_integritate := dbms_crypto.encrypt(raw_integritate, operation_mode, cheie_crypt);
+        
+        insert into pacient_criptat values (encrypt_id, encrypt_prenume, encrypt_cnp, encrypt_sex, encrypt_integritate);
+    end loop;
+    commit;
+end;
+/
+execute criptare_pacient;
+select * from pacient_criptat;
+
+-- Facem procedura inversa, de decriptare
+drop table pacient_decriptat;
+create table pacient_decriptat (
+    id_pacient       varchar2(100),
+    prenume          varchar2(100) not null,
+    cnp              varchar2(100) not null,
+    sex              varchar2(100) not null,
+    constraint pacient_deriptat_pk primary key (id_pacient)
+);
+
+create or replace procedure decriptare_pacient as
+  cheie_derypt raw(16);
+  operation_mode pls_integer;
+  
+  -- cursorul care parcurge liniile tabelului PACIENT
+  cursor c is select * from pacient_criptat;
+
+  raw_id raw(100);
+  raw_prenume raw(100);
+  raw_cnp raw(100);
+  raw_sex raw(100);
+  raw_integritate raw(500);
+  
+  decrypt_id varchar2(100);
+  decrypt_prenume varchar2(100);
+  decrypt_cnp varchar2(100);
+  decrypt_sex varchar2(100);
+  decrypt_integritate raw(500);
+  
+  concat_val varchar2(500);
+  raw_concat_val raw(500);
+begin
+    select cheie into cheie_derypt from chei where id_chei = 1;
+    operation_mode := dbms_crypto.encrypt_aes128 + dbms_crypto.pad_pkcs5 + dbms_crypto.chain_cbc;
+    
+    for i in c loop
+        raw_id := dbms_crypto.decrypt(i.id_pacient, operation_mode, cheie_derypt);
+        raw_prenume := dbms_crypto.decrypt(i.prenume, operation_mode, cheie_derypt);
+        raw_cnp := dbms_crypto.decrypt(i.cnp, operation_mode, cheie_derypt);
+        raw_sex := dbms_crypto.decrypt(i.sex, operation_mode, cheie_derypt);
+    
+        decrypt_id := utl_i18n.raw_to_char(raw_id, 'AL32UTF8');
+        decrypt_prenume := utl_i18n.raw_to_char(raw_prenume, 'AL32UTF8');
+        decrypt_cnp := utl_i18n.raw_to_char(raw_cnp, 'AL32UTF8');
+        decrypt_sex := utl_i18n.raw_to_char(raw_sex, 'AL32UTF8');
+        
+        concat_val := decrypt_id || decrypt_prenume || decrypt_cnp || decrypt_sex;
+        raw_concat_val := utl_i18n.string_to_raw(concat_val);
+        raw_integritate := dbms_crypto.hash(raw_concat_val, dbms_crypto.hash_md5);
+        decrypt_integritate := dbms_crypto.decrypt(i.integritate, operation_mode, cheie_derypt);
+        
+        if (raw_integritate = decrypt_integritate) then
+            insert into pacient_decriptat values (decrypt_id, decrypt_prenume, decrypt_cnp, decrypt_sex);
+        else
+            dbms_output.put_line('Integrity failed at id: ' || decrypt_id);
+        end if;
+    end loop;
+    commit;
+end;
+/
+execute decriptare_pacient;
+select * from pacient_decriptat;
+select * from pacient;
+
+/*
+-- Procedura de înlocuire a CNP din tabela PACIENT cu date criptate
+create or replace procedure encryptdes(id_pacient_in number) as
+  secret_key varchar2(8) := '12345678';
+  linie_tabel pacient%rowtype;
+  
+  raw_cnp      raw(100);
+  raw_key      raw(100);
+  operation_mode      pls_integer;
+  encrypt_cnp     varchar2(100);
+begin
+    select * into linie_tabel from pacient where id_pacient = id_pacient_in;
+    raw_cnp := utl_i18n.string_to_raw(linie_tabel.cnp, 'AL32UTF8');
+    raw_key := utl_i18n.string_to_raw(secret_key, 'AL32UTF8');
+    operation_mode := dbms_crypto.encrypt_des + dbms_crypto.pad_zero + dbms_crypto.chain_ecb;
+    encrypt_cnp  := dbms_crypto.encrypt(raw_cnp, operation_mode, raw_key);
+    
+    update pacient
+    set cnp = encrypt_cnp
+    where id_pacient = id_pacient_in;
+    --commit;
+end;
+/
+execute encryptdes(10);
+select * from pacient;
+
+-- Procedura de Decriptare
+create or replace procedure decryptdes(id_pacient_in number) as
+  secret_key varchar2(8) := '12345678';
+  linie_tabel pacient%rowtype;
+  
+  raw_cnp      raw(100);
+  raw_key      raw(100);
+  operation_mode      pls_integer;
+  decrypt_cnp     varchar2(100);
+begin
+    select * into linie_tabel from pacient where id_pacient = id_pacient_in;
+    raw_key := utl_i18n.string_to_raw(secret_key, 'AL32UTF8');
+    operation_mode := dbms_crypto.encrypt_des + dbms_crypto.pad_zero + dbms_crypto.chain_ecb;
+    raw_cnp  := dbms_crypto.decrypt(linie_tabel.cnp, operation_mode, raw_key);
+    decrypt_cnp := utl_i18n.raw_to_char(raw_cnp, 'AL32UTF8');
+    
+    update pacient
+    set cnp = decrypt_cnp
+    where id_pacient = id_pacient_in;
+    --commit;
+end;
+/
+execute decryptdes(10);
+select * from pacient;
+
+
+-- Procedură pentru a cripta toate datele existente din tabel PACIENT
+create or replace procedure criptare_tabel as
+  cursor c is select * from pacient;
+begin
+    for i in c loop
+        encrypt3des(i.id_pacient);
+    end loop;
+end;
+/
+execute criptare_tabel;
+
+-- Procedură pentru a decripta toate datele existente din tabel PACIENT
+create or replace procedure decriptare_tabel as
+  cursor c is select * from pacient;
+begin
+    for i in c loop
+        decrypt3des(i.id_pacient);
+    end loop;
+end;
+/
+execute decriptare_tabel;
+
+-- Trigger Insert (când se adauga un nou pacient, criptam datele lui)
+create or replace trigger before_insert_crypt 
+before insert on pacient
+begin
+    decriptare_tabel;
+end;
+/
+
+create or replace trigger after_insert_crypt 
+after insert on pacient
+begin
+    criptare_tabel;
+end;
+/
+*/
+
+
+
+
+
+----- Operații de Audit
+-- Audit Standard
+audit insert, delete, update on consultatie;
+audit insert, delete, update on sef1.reteta;
+audit insert, delete, update on doctor2.reteta;
+audit insert, delete, update on doctor3.reteta;
+audit insert, delete, update on doctor4.reteta;
+
+-- Pentru a oprit auditul standard
+noaudit insert, delete, update on consultatie;
+noaudit insert, delete, update on sef1.reteta;
+noaudit insert, delete, update on doctor2.reteta;
+noaudit insert, delete, update on doctor3.reteta;
+noaudit insert, delete, update on doctor4.reteta;
+
+
+-- Trigger audit
+update sectie set id_sef = 31 where id_sectie = 400;
+insert into doctor values (35, 'Vasilescu', 'Bianca', '0716369520', 'bvasilescu@clinica.com', 14, 18, 400);
+commit;
+
+
+-- Politica Audit
+insert into procedura values (106, 'Analize Test Sofer', 20, 100);
+rollback;
+
+
+
+
+
+----- Contextul Aplicației
+-- Asistentele și Pacienții nu au voie să facă programari dacă contextul e NU
+create or replace trigger tr_before_insert 
+before insert on consultatie
+begin
+    if sys_context('clinica_context', 'attr_hour') = 'NU' then
+        dbms_output.put_line('Nu se pot face programari - INSERT!');
+        raise_application_error(-20009, 'You cannot insert into table CONSULTATIE right now!');
+    end if;  
+end;
+/
+
+create or replace trigger tr_before_update
+before update on consultatie
+begin
+    if sys_context('clinica_context', 'attr_hour') = 'NU' then
+        dbms_output.put_line('Nu se pot face programari - UPDATE!');
+        raise_application_error(-20009, 'You cannot insert into table CONSULTATIE right now!');
+    end if;  
+end;
+/
+
+
+-- SQL Injection
+create or replace procedure vede_consultatiile(cnp varchar2) as
+    type t_table is table of consultatie%rowtype;
+    v_table t_table;
+begin
+    execute immediate 'select c.* from consultatie c, pacient p where c.id_pacient = p.id_pacient and p.cnp = ' || cnp
+    bulk collect into v_table;
+    for i in 1..v_table.count loop
+        dbms_output.put_line('Consultatii in data ' || v_table(i).data_consultatie || ', la ora ' || v_table(i).ora);
+    end loop;
+end;
+/
+grant execute on vede_consultatiile to pacient;
+
+
+
+
+
+----- Mascarea Datelor
+-- Mascare nume și nr_tel
+create or replace package pack_masking is
+    function f_masking_nume(nume varchar2) return varchar2;
+    function f_masking_mail(mail varchar2) return varchar2;
+end;
+/
+
+create or replace package body pack_masking is
+  type t_tabind is table of number index by pls_integer;
+  v_tabind t_tabind;
+
+  function f_masking_nume (nume varchar2) return varchar2 is
+    v_nume varchar2(100);
+    v_len number;
+  begin
+        v_nume := substr(nume, 1, 1);
+        select length(nume) into v_len from dual;
+        v_nume := rpad(v_nume, v_len, '*'); -- we keep only the first
+        --character and we fill with "* " up to the --original string’s length
+        return v_nume;
+  end f_masking_nume;
+  
+  function f_masking_mail (mail varchar2) return varchar2 is
+    v_mail varchar2(100);
+    pozitie number;
+  begin
+        pozitie := instr(mail, '@');
+        v_mail := rpad(substr(mail, 1, 1), pozitie, '*') || substr(mail, pozitie);
+        return v_mail;
+  end f_masking_mail;
+end;
+/
+
+select pack_masking.f_masking_nume('Test') from dual;
+select pack_masking.f_masking_mail('Test@mail.com') from dual;
+/*  Comanda o rulam în CMD (nesparat pe o singura linie ca altfel nu merge):
+    expdp clinica_admin/admin@orclpdb schemas=clinica_admin remap_data=clinica_admin.pacient.nume:pack_masking.f_masking_nume remap_data=clinica_admin.pacient.mail:pack_masking.f_masking_mail directory=DIREXP_SAL dumpfile=EXPORT_FILE.dmp
+    impdp clinica_admin/admin@orclpdb directory=DIREXP_SAL dumpfile= EXPORT_FILE.DMP TABLES=pacient remap_table=pacient:pacient_masked
+*/
+select * from pacient_masked;
+
+
+
+
+
+
+
+

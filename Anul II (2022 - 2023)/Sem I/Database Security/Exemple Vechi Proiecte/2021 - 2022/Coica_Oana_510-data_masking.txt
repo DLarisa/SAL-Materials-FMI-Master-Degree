@@ -1,0 +1,61 @@
+-- creating the PL/SQL package that includes data masking functions
+CREATE OR REPLACE PACKAGE masking_package IS
+    FUNCTION f_masking_name (name_to_mask VARCHAR2) RETURN VARCHAR2;
+    FUNCTION f_masking_email (email_to_mask VARCHAR2) RETURN VARCHAR2;
+    FUNCTION f_masking_pnc (pnc_to_mask VARCHAR2) RETURN VARCHAR2;
+END;
+/
+
+CREATE OR REPLACE PACKAGE BODY masking_package IS
+    -- for names, we want to keep the first character
+    FUNCTION f_masking_name (name_to_mask VARCHAR2) RETURN VARCHAR2
+    IS
+        v_masked_name VARCHAR2(100);
+        v_length NUMBER;
+    BEGIN 
+        v_masked_name := SUBSTR(name_to_mask, 1, 2);
+        SELECT LENGTH(name_to_mask) 
+        INTO v_length
+        FROM DUAL;
+        
+        v_masked_name := RPAD(v_masked_name, v_length, '*');
+        RETURN v_masked_name;
+    END f_masking_name;
+    
+    -- for email addresses, we want to keep the general shape of an email address (something@something.something), where every sub-piece of the address has its original first two characters
+    FUNCTION f_masking_email (email_to_mask VARCHAR2) RETURN VARCHAR2
+    IS 
+        v_masked_email VARCHAR2(100);
+    BEGIN
+        SELECT REGEXP_REPLACE(email_to_mask, '(\w{2})\w+', '\1**')
+        INTO v_masked_email
+        FROM dual;
+        RETURN v_masked_email;
+    END f_masking_email;
+    
+    -- for PNC, we want to keep the birthday information (digits 2-7)
+    FUNCTION f_masking_pnc (pnc_to_mask VARCHAR2) RETURN VARCHAR2
+    IS 
+        v_masked_pnc VARCHAR2(13);
+    BEGIN
+        SELECT RPAD('*' || SUBSTR(pnc_to_mask, 2, 6), 13, '*')
+        INTO v_masked_pnc
+        FROM dual;
+        
+        RETURN v_masked_pnc;
+    END f_masking_pnc;
+END;
+/
+
+-- creating a directory object (and the folder associated with it)
+CREATE OR REPLACE DIRECTORY DIREXP AS 'D:\SECBD';
+
+-- executing the command of data exporting with masking from CMD
+expdp vault/Welcome123@o12c tables=employees remap_data=vault.employees.first_name:masking_package.f_masking_name remap_data=vault.employees.last_name:masking_package.f_masking_name remap_data=vault.employees.email_address:masking_package.f_masking_email remap_data=vault.employees.personal_numerical_code:masking_package.f_masking_pnc directory=DIREXP dumpfile=EXPORT_FILE.dmp
+
+-- importing tables with masked data from CMD 
+impdp vault/Welcome123@o12c directory=DIREXP dumpfile=EXPORT_FILE.DMP TABLES=employees remap_table=employees:emp1
+
+-- testing 
+SELECT * FROM emp1;
+

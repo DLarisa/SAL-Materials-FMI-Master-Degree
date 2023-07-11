@@ -1,0 +1,26 @@
+interface g0/2.10
+description Legatura cu VLAN10
+encapsulation dot1Q 10
+ip address 192.168.10.1 255.255.255.0 ----- D.Gw. VLAN10, SM
+ex
+interface g0/2.20
+description Legatura cu VLAN20
+encapsulation dot1Q 20
+ip address 192.168.20.1 255.255.255.0 ----- D.Gw. VLAN20, SM
+ex
+interface g0/2.30
+description Legatura cu VLAN30
+encapsulation dot1Q 30
+ip address 192.168.30.1 255.255.255.0 ----- D.Gw. VLAN30, SM
+ex
+interface g0/2
+no sh
+ex
+do wr
+-----------------------------------------------
+router ospf 1
+network 192.168.10.0 0.0.0.255 area 0
+network 192.168.20.0 0.0.0.255 area 0
+network 192.168.30.0 0.0.0.255 area 0
+area 0 auth mess
+do wr

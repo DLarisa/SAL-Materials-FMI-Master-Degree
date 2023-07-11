@@ -1,0 +1,8 @@
+select * from session_privs;
+
+--2.2
+SELECT * FROM ELEARN_APP_ADMIN.VIZ_FEEDB WHERE cod_student=1;
+
+INSERT INTO ELEARN_APP_ADMIN.VIZ_FEEDB VALUES('UN CURS INTERESANT',101,'PROF1');
+
+commit;

@@ -1,0 +1,140 @@
+-- standard audit
+-- activating the audit
+ALTER SYSTEM SET audit_trail=db SCOPE=SPFILE;
+ALTER SYSTEM SET audit_sys_operations=true SCOPE=SPFILE;
+
+-- verifying audit settings
+SHOW PARAMETER AUDIT;
+
+-- activating standard audit for schema objects (rights_management)
+AUDIT SELECT, INSERT, UPDATE, DELETE
+ON rights_management
+BY ACCESS WHENEVER NOT SUCCESSFUL;
+
+-- triggering an action that should be audited
+INSERT INTO rights_management 
+VALUES (9999999999, 999999999999, 'test');
+
+-- verifying the audit
+SELECT * FROM SYS.AUD$ 
+WHERE obj$name = 'RIGHTS_MANAGEMENT';
+
+-- creating a table for tests
+CREATE TABLE vault.new_table(
+	dummy_data VARCHAR2(50)
+);
+
+-- triggering an action that should be audited 
+DROP TABLE new_table;
+
+-- verifying the audit 
+SELECT * FROM SYS.AUD$
+WHERE obj$name = 'NEW_TABLE';
+
+
+-- audit triggers 
+-- function that verifies if a given string is a number
+CREATE OR REPLACE FUNCTION is_number (given_string IN VARCHAR2)
+    RETURN INTEGER
+IS
+    given_number NUMBER;
+BEGIN
+    given_number := TO_NUMBER(given_string);
+    RETURN 1;
+EXCEPTION
+    WHEN VALUE_ERROR THEN
+        RETURN 0;
+END is_number;
+/
+
+-- trigger that inserts logs into vault_access_audit when an employee inserts, deletes or updates a credential
+CREATE OR REPLACE TRIGGER credentials_audit_trigger
+    AFTER INSERT OR DELETE OR UPDATE ON credentials
+    FOR EACH ROW
+DECLARE 
+    user_that_wants_modification VARCHAR2(100);
+    is_it_user INTEGER;
+BEGIN
+    -- detecting the user that inserts/ deletes/ updates a password
+    user_that_wants_modification := SUBSTR(USER, 2, LENGTH(USER)-1);
+    
+    IF is_number(user_that_wants_modification) = 1 THEN -- verifying that the user is an employee
+        SELECT COUNT(employee_id)
+        INTO is_it_user
+        FROM employees
+        WHERE employee_id = TO_NUMBER(user_that_wants_modification);
+            
+        IF is_it_user = 1 THEN
+            IF INSERTING THEN  
+                INSERT INTO vault_access_audit VALUES (log_seq.NEXTVAL, TO_NUMBER(user_that_wants_modification), :NEW.credential_id, CURRENT_TIMESTAMP, 'added new credential');
+            ELSIF UPDATING THEN 
+                INSERT INTO vault_access_audit VALUES (log_seq.NEXTVAL, TO_NUMBER(user_that_wants_modification), :NEW.credential_id, CURRENT_TIMESTAMP, 'updated credential');
+            ELSIF DELETING THEN 
+                INSERT INTO vault_access_audit VALUES (log_seq.NEXTVAL, TO_NUMBER(user_that_wants_modification), :OLD.credential_id, CURRENT_TIMESTAMP, 'deleted credential');
+            END IF;
+        END IF;
+    END IF;
+END;
+/
+
+-- creating a new user for employee 55555 to test the audit trigger
+ALTER SESSION SET "_ORACLE_SCRIPT"=TRUE;
+
+CREATE USER E55555 IDENTIFIED BY Welcome123
+   DEFAULT TABLESPACE USERS
+   TEMPORARY TABLESPACE TEMP
+   QUOTA UNLIMITED ON USERS;
+/
+
+GRANT CONNECT TO E55555;
+GRANT INSERT ON vault.credentials TO E55555;
+
+-- testing the audit trigger
+INSERT INTO vault.credentials
+VALUES (108, 10004, 'hr@thisisfake.com', 'LinkedinPassword', TO_DATE('2022-01-01', 'YYYY-MM-DD'), TO_DATE('2022-01-01', 'YYYY-MM-DD'), NULL, NULL);
+COMMIT;
+/
+
+-- checking the log table
+SELECT * FROM vault_access_audit;
+
+-- audit policy
+-- using the sys account, we grant execution permissions on the DBMS_FGA package to the vault user
+-- and selecting and updating permissions on the credentials table to user E55555 (to test the policy later)
+GRANT EXECUTE ON DBMS_FGA TO vault;
+/
+
+GRANT SELECT, UPDATE ON vault.credentials TO E55555;
+/
+
+-- creating and enabling the policy that logs when a user changes a credential but (s)he doesn't update the last_changed field (at least not properly)
+BEGIN
+    DBMS_FGA.ADD_POLICY(
+        object_schema   => 'vault',
+        object_name     => 'credentials',
+        policy_name     => 'changed_credential_but_no_update_on_last_changed',
+        audit_condition => 'CAST(last_changed as DATE) < CAST(CURRENT_TIMESTAMP as DATE)', 
+        audit_column    => 'username, password',
+        enable          =>  FALSE,
+        statement_types => 'UPDATE'
+    );
+    
+    DBMS_FGA.ENABLE_POLICY(
+        object_schema   => 'vault',
+        object_name     => 'credentials',
+        policy_name     => 'changed_credential_but_no_update_on_last_changed'
+    );    
+END;
+/
+
+-- testing the new policy
+UPDATE vault.credentials
+    SET password = 'Microsoft'
+    WHERE credential_id = 100;
+
+COMMIT;
+/
+
+-- checking the logs
+SELECT db_user, userhost, policy_name, timestamp, sql_text
+FROM dba_fga_audit_trail;

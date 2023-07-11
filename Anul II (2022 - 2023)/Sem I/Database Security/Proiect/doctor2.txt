@@ -1,0 +1,16 @@
+--------------------------     DOCTOR2     --------------------------
+SET SERVEROUTPUT ON;
+SET ECHO OFF;
+SET VERIFY OFF;
+
+-- Inserare Date în Tabel REȚETA
+insert into doctor2.reteta values (1, null, 'OCT recomandat', null, 21, 1);
+insert into doctor2.reteta values (2, 'Picaturi Ochi Hidratare, Ocul+', 'Ochelari de soare in permanenta si odihna', null, 21, 3);
+commit;
+select * from doctor2.reteta;
+
+
+
+-- Audit Standard
+delete from reteta where id_reteta = 1;
+commit;

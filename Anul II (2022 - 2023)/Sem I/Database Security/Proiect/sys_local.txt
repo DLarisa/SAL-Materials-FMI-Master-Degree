@@ -1,0 +1,314 @@
+--------------------------     SYS_LOCAL     --------------------------
+SET SERVEROUTPUT ON;
+SET ECHO OFF;
+SET VERIFY OFF;
+
+-- Verificăm în ce conexiune ne aflăm (CDB$ROOT)
+show con_name;
+-- Ne mutăm în baza de date pluggable (orclpdb
+alter session set container = orclpdb;
+-- Verificăm să avem privilegii de READ/WRITE
+select name, open_mode from v$pdbs;
+
+
+-- Creăm userul clinica_admin și oferim privilegii
+create user clinica_admin identified by clinica_admin password expire;
+-- Pentru a se loga și a acorda permisiunea de a de loga userilor
+grant create session to clinica_admin with admin option;
+-- Pentru a crea conturi de utilizatori
+grant create user to clinica_admin;
+-- Pentru a crea orice tabel (adminii crează pe toate, inclusiv REȚETA din schema doctorilor)
+grant create any table to clinica_admin;
+-- Are nevoie să acceseze PK
+grant create any index to clinica_admin;
+-- Acces creare roluri
+grant create role to clinica_admin;
+-- Acces Proceduri
+grant create any procedure to clinica_admin;
+-- Acces Triggers
+grant create trigger to clinica_admin;
+-- Pentru criptarea datelor
+grant execute on dbms_crypto to clinica_admin;
+/*
+-- Pentru Secvențe
+grant create sequence to clinica_admin;
+grant execute on clinic_admin.pack_masking to clinic_admin;
+*/
+
+
+-- Verificăm dacă user-ul a fost creat cu succes
+select username, account_status, authentication_type, created
+from dba_users where username like 'CLINICA_ADMIN';
+-- Verificăm dacă users creați de clinica_admin au fost creați cu succes
+select username, account_status, authentication_type, created
+from dba_users order by created desc;
+
+
+
+----- Oferim resurse utilizatorilor
+-- Memorie
+alter user clinica_admin quota unlimited on users;
+alter user vizitator quota 0M on users;
+alter user asistenta1 quota 0M on users;
+alter user asistenta2 quota 0M on users;
+alter user asistenta3 quota 0M on users;
+alter user pacient1 quota 0M on users;
+alter user pacient2 quota 0M on users;
+alter user pacient3 quota 0M on users;
+alter user sef1 quota 5M on users;
+alter user doctor2 quota 5M on users;
+alter user doctor3 quota 5M on users;
+alter user doctor4 quota 5M on users;
+-- Vedem informațiile despre memoria alocată
+select * from dba_ts_quotas where tablespace_name like 'USERS';
+
+
+-- Profile (detalii sesiune, idle_time, failed_login_attempts, password_life_time, etc...)
+create profile profil_vizitator limit
+    sessions_per_user 3
+    idle_time 5
+    connect_time 30;
+alter user vizitator profile profil_vizitator;
+
+create profile profil_angajat limit
+    sessions_per_user 1
+    password_life_time 90
+    failed_login_attempts 3
+    cpu_per_call 6000
+    idle_time 15;
+alter user sef1 profile profil_angajat;
+alter user doctor2 profile profil_angajat;
+alter user doctor3 profile profil_angajat;
+alter user doctor3 profile profil_angajat;
+alter user asistenta1 profile profil_angajat;
+alter user asistenta2 profile profil_angajat;
+alter user asistenta3 profile profil_angajat;
+
+create profile profil_pacient limit
+    sessions_per_user 1
+    failed_login_attempts 10
+    cpu_per_call 6000
+    idle_time 15;
+alter user pacient1 profile profil_pacient;  
+alter user pacient2 profile profil_pacient;
+alter user pacient3 profile profil_pacient;
+-- Vizualizare informații despre profile
+select * from dba_profiles where profile like 'PROFIL%';
+-- Deblocare cont blocat
+alter user asistenta3 account unlock;
+
+
+-- Plan de Consum CPU
+create or replace procedure clinica_plan_cpu as
+  nr number := 0;
+begin
+    -- Creare zona de lucru și plan
+    dbms_resource_manager.create_pending_area();
+    dbms_resource_manager.create_plan(plan => 'CLINICA_PLAN_CPU', comment => 'Plan de consumptie pentru clinica privata.');
+    
+    -- Grupuri de consum
+    dbms_resource_manager.create_consumer_group(consumer_group => 'admin', comment => 'Grup de sesiune pt administratori bd.');     
+    dbms_resource_manager.create_consumer_group(consumer_group => 'angajati', comment => 'Grup de sesiune pt angajati.'); 
+    dbms_resource_manager.create_consumer_group(consumer_group => 'pacienti', comment => 'Grup de sesiune pt pacienti.');
+    
+    -- Va fi creat dacă nu există deja
+    select count(*) into nr
+    from dba_rsrc_consumer_groups
+    where consumer_group = 'OTHER_GROUPS';
+    
+    if nr = 0 then
+      dbms_resource_manager.create_consumer_group(consumer_group => 'OTHER_GROUPS', comment => 'Grup de sesiune pt vizitatori.'); 
+    end if;
+    
+    -- Mapare între grupuri de consum și users (users nu pot fi OTHER_GROUPS)
+    dbms_resource_manager.set_consumer_group_mapping(dbms_resource_manager.oracle_user, 'clinica_admin', 'admin');
+    dbms_resource_manager.set_consumer_group_mapping(dbms_resource_manager.oracle_user, 'sef1', 'angajati');
+    dbms_resource_manager.set_consumer_group_mapping(dbms_resource_manager.oracle_user, 'doctor2', 'angajati');
+    dbms_resource_manager.set_consumer_group_mapping(dbms_resource_manager.oracle_user, 'doctor3', 'angajati');
+    dbms_resource_manager.set_consumer_group_mapping(dbms_resource_manager.oracle_user, 'doctor4', 'angajati');
+    dbms_resource_manager.set_consumer_group_mapping(dbms_resource_manager.oracle_user, 'asistenta1', 'angajati');
+    dbms_resource_manager.set_consumer_group_mapping(dbms_resource_manager.oracle_user, 'asistenta2', 'angajati');
+    dbms_resource_manager.set_consumer_group_mapping(dbms_resource_manager.oracle_user, 'asistenta3', 'angajati');
+    dbms_resource_manager.set_consumer_group_mapping(dbms_resource_manager.oracle_user, 'pacient1', 'pacienti');
+    dbms_resource_manager.set_consumer_group_mapping(dbms_resource_manager.oracle_user, 'pacient2', 'pacienti');
+    dbms_resource_manager.set_consumer_group_mapping(dbms_resource_manager.oracle_user, 'pacient3', 'pacienti');
+    
+    -- Planificare directive (CPU) pentru fiecare grup de consum
+    dbms_resource_manager.create_plan_directive(plan => 'CLINICA_PLAN_CPU', group_or_subplan => 'admin', 
+                              comment => 'Planificare directiva pt administratori.', MGMT_P1 => 30);
+    dbms_resource_manager.create_plan_directive(plan => 'CLINICA_PLAN_CPU', group_or_subplan => 'angajati', 
+                              comment => 'Planificare directiva pt angajati.', MGMT_P1 => 35);
+    dbms_resource_manager.create_plan_directive(plan => 'CLINICA_PLAN_CPU', group_or_subplan => 'pacienti', 
+                              comment => 'Planificare directiva pt pacienti.', MGMT_P1 => 25);
+    dbms_resource_manager.create_plan_directive(plan => 'CLINICA_PLAN_CPU', group_or_subplan => 'OTHER_GROUPS', 
+                              comment => 'Planificare directiva pt vizitatori.', MGMT_P1 => 10);
+    
+    -- Validare zona de lucru și submit
+    dbms_resource_manager.validate_pending_area();
+    dbms_resource_manager.submit_pending_area();
+end;
+/
+execute clinica_plan_cpu;
+-- Pentru a vedea userii, grupul de sesiune și planul de consum
+select distinct a.username, c.group_or_subplan, c.mgmt_p1,c.plan 
+from dba_rsrc_plan_directives c 
+left outer join dba_users a 
+on (c.group_or_subplan = a.initial_rsrc_consumer_group) 
+order by a.username nulls last; 
+
+
+
+
+
+----- Roluri și Privilegii
+-- Permisiuni Admin (tb sa permita la alți useri sa faca operții pe rețete)
+grant select, update, insert, delete on sef1.reteta to clinica_admin with grant option;
+grant select, update, insert, delete on doctor2.reteta to clinica_admin with grant option;
+grant select, update, insert, delete on doctor3.reteta to clinica_admin with grant option;
+grant select, update, insert, delete on doctor4.reteta to clinica_admin with grant option;
+
+
+
+
+
+----- Audit
+-- Configurare mediu de lucru
+-- Suntem în ORCLPDB
+show con_name;
+-- Ne mutam în CDB$ROOT;
+alter session set container = CDB$ROOT;
+-- Avem XML, EXTENDED
+show parameter audit_trail;
+-- Dorim să reținem datele audit-ului în BD, așa că trebuie sa ne setam DB, EXTENDED
+alter system set audit_trail=db,extended scope=spfile;
+-- Acum Avem DB, EXTENDED
+show parameter audit_trail;
+alter pluggable database orclpdb open;
+
+-- Pentru a vedea auditul standard
+select obj$name, sqltext, userid, ntimestamp#
+from aud$
+order by ntimestamp# desc;
+
+
+--- Trigger Audit 
+-- Creare tabel audit
+create sequence secventa_audit start with 1 increment by 1;
+-- drop table audit_istoric;
+create table audit_istoric (
+    id_audit number,
+    user_ varchar2(30),
+    session_ number(10),
+    host_ varchar2(100),
+    time_ date,
+    nume varchar2(20),
+    constraint audit_pk primary key (id_audit)
+);
+
+-- Configurare Trigger (INSERT și UPDATE pe DOCTOR și SECȚIE)
+create or replace trigger audit_trigger_doctor
+after insert or update on clinica_admin.doctor
+for each row
+begin
+    insert into audit_istoric values (secventa_audit.nextval, sys_context('userenv', 'session_user'),
+                                      sys_context('userenv', 'sessionid'), sys_context('userenv', 'host'),
+                                      sysdate, 'DOCTOR');
+end;
+/
+
+create or replace trigger audit_trigger_sectie
+after insert or update on clinica_admin.sectie
+for each row
+begin
+    insert into audit_istoric values (secventa_audit.nextval, sys_context('userenv', 'session_user'),
+                                      sys_context('userenv', 'sessionid'), sys_context('userenv', 'host'),
+                                      sysdate, 'SECTIE');
+end;
+/
+
+select * from audit_istoric;
+
+
+--- Politica Audit
+-- Handler
+create or replace procedure audit_handler(object_schema varchar2, object_name varchar2, policy_name varchar2) as
+begin
+    dbms_output.put_line('Modififcare Procedura');
+end;
+/
+-- Politica
+create or replace procedure proc_audit as
+begin
+    dbms_fga.add_policy(
+        object_schema => 'CLINICA_ADMIN',
+        object_name => 'PROCEDURA',
+        policy_name => 'politica_procedura',
+        enable => false,
+        statement_types => 'INSERT',
+        handler_module => 'AUDIT_HANDLER'
+    );
+end;
+/
+execute proc_audit;
+-- Trebuie activata mai întâi
+begin
+    dbms_fga.enable_policy(
+        object_schema => 'CLINICA_ADMIN',
+        object_name => 'PROCEDURA',
+        policy_name => 'politica_procedura'
+    );
+end;
+/
+-- Detalii politici
+select db_user, userhost, policy_name, timestamp, sql_text
+from dba_fga_audit_trail
+where db_user like 'CLINICA_ADMIN';
+
+
+
+
+
+----- Contextul Aplicației
+create context clinica_context using procedura_clinica_context;
+create or replace procedure procedura_clinica_context is
+  v_hour number(3);
+begin
+    select to_number(to_char(sysdate, 'hh24')) into v_hour from dual;
+    dbms_output.put_line('Hour: ' || v_hour);
+    
+    if v_hour < 8 or v_hour > 20 then
+        dbms_output.put_line ('Nu se pot face programari in afara orelor de lucru!');
+        dbms_session.set_context('clinica_context', 'attr_hour', 'NU');
+    else
+        dbms_session.set_context('clinica_context', 'attr_hour', 'DA');
+    end if; 
+end;
+/
+execute procedura_clinica_context;
+
+-- Asistentele și Pacienții la login primesc acest context automat
+create or replace trigger tr_after_logon
+after logon on database
+declare
+  v_user varchar2(30);
+begin
+    v_user := sys_context('userenv', 'session_user');
+    if lower(v_user) like '%asistenta%' or lower(v_user) like '%pacient%' then
+        procedura_clinica_context;
+    end if;
+end;
+/
+
+
+
+
+
+----- Mascarea Datelor
+create or replace directory direxp_sal as 'C:\Users\Larisa\Desktop\mascare';
+grant read, write on directory direxp_sal to clinica_admin;
+
+
+
+
+
+

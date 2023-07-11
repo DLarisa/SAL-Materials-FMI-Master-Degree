@@ -1,0 +1,118 @@
+-- Teorie
+--1.2
+CREATE TABLE COURSE
+(id number(6) primary key,
+course_name varchar2(30) NOT NULL,
+year_of_study number(1) NOT NULL, semester number(1) NOT NULL,
+nb_credits number(1) NOT NULL,
+assessment_type VARCHAR2(10) DEFAULT 'EXAM',
+nb_course_hours number(2) DEFAULT 28,
+nb_lab_hours number(2) DEFAULT 14,
+nb_seminar_hours number(2) DEFAULT 0);
+
+-- Ce privilegii avem
+select * from session_privs;
+
+ALTER TABLE COURSE drop column nb_seminar_hours;
+DROP TABLE COURSE ; -- then re-create it
+INSERT INTO COURSE VALUES (1,'DATABASE SECURITY', 6,1,5,'E',28,14,0);
+
+
+
+--1.3
+-- Creăm tabel în schema lui professor1
+CREATE TABLE ELEARN_professor1.FEEDBACK
+( id number(6) primary key, message varchar2(200), feedback_date date);
+
+
+-- Nu are privilegii de alter, insert sau drop
+ALTER TABLE ELEARN_professor1.FEEDBACK drop column feedback_date;
+DROP TABLE ELEARN_professor1.FEEDBACK ;
+CREATE TABLE ELEARN_professor1.FEEDBACK
+(id number(6) primary key, message varchar2(200), feedback_date date);
+INSERT INTO ELEARN_professor1.FEEDBACK VALUES (1, 'very interesting and useful subject', SYSDATE);
+select * from ELEARN_professor1.FEEDBACK;
+
+
+
+--2
+--2.1
+GRANT SELECT,INSERT,UPDATE ON ELEARN_APP_ADMIN.COURSE TO ELEARN_professor1;
+
+ALTER TABLE ELEARN_professor1.FEEDBACK drop column feedback_date;
+
+ALTER TABLE ELEARN_professor1.FEEDBACK add student_id NUMBER(4);
+ALTER TABLE ELEARN_professor1.FEEDBACK add feedback_date date;
+
+--2.2
+CREATE TABLE ELEARN_professor2.FEEDBACK
+( id number(6) primary key,
+message varchar2(200), student_id number(4),
+feedback_date date);
+CREATE TABLE ELEARN_assistent3.FEEDBACK
+( id number(6) primary key,
+message varchar2(200), student_id number(4),
+feedback_date date);
+
+
+-- Mai întâi tb privilegii de view din sys
+CREATE OR REPLACE VIEW FEEDB_VIEW AS
+SELECT MESSAGE,STUDENT_ID,'PROF1' AS prof
+FROM ELEARN_professor1.FEEDBACK
+UNION
+SELECT MESSAGE,STUDENT_ID,'PROF2' AS prof
+FROM ELEARN_professor2.FEEDBACK
+UNION
+SELECT MESSAGE,STUDENT_ID,'ASIST3' AS prof
+FROM ELEARN_assistent3.FEEDBACK;
+-- Drept de view pt student1
+GRANT SELECT ON ELEARN_APP_ADMIN.FEEDB_VIEW TO
+ELEARN_student1;
+
+
+
+-- Creăm trigger
+CREATE OR REPLACE TRIGGER TR_FEEDB
+INSTEAD OF INSERT ON FEEDB_VIEW
+FOR EACH ROW
+BEGIN
+IF :NEW.PROF='PROF1' THEN
+INSERT INTO ELEARN_professor1.FEEDBACK
+VALUES(SYSDATE - TO_DATE('2000-01-01', 'yyyy-mm-dd'),
+:NEW.MESSAGE,101,SYSDATE);
+END IF;
+IF :NEW.PROF='PROF2' THEN
+INSERT INTO ELEARN_professor2.FEEDBACK
+VALUES(SYSDATE - TO_DATE('2000-01-01', 'yyyy-mm-dd'),
+:NEW.MESSAGE,101,SYSDATE);
+END IF;
+IF :NEW.PROF='ASIST3' THEN
+INSERT INTO ELEARN_assistent3.FEEDBACK
+VALUES(SYSDATE - TO_DATE('2000-01-01', 'yyyy-mm-dd'),
+:NEW.MESSAGE,101,SYSDATE);
+END IF;
+END;
+/
+
+-- Privilegii de insert studentului
+GRANT INSERT ON ELEARN_APP_ADMIN.FEEDB_VIEW
+TO ELEARN_student1;
+
+
+
+
+--2.3
+-- După ce a primit privilegii de la sys
+CREATE OR REPLACE PROCEDURE DELETE_SPAM(key1 VARCHAR2, key2 VARCHAR2 default 'advertisement', 
+key3 VARCHAR2 default 'publicity') authid current_user AS
+BEGIN
+DELETE FROM ELEARN_professor1.FEEDBACK
+WHERE MESSAGE LIKE '%'||key1||'%' OR MESSAGE LIKE '%'||key2||'%'
+OR MESSAGE LIKE '%'||key3||'%';
+DBMS_OUTPUT.PUT_LINE(SQL%ROWCOUNT||' spam mesages have been deleted from the professor 1''s table');
+COMMIT;
+END;
+/
+execute delete_spam('avantajos');
+-- Drepturi pentru procedură și lui assitent3
+grant execute on delete_spam to elearn_assistant3;

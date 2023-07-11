@@ -1,0 +1,10 @@
+--------------------------     DOCTOR4     --------------------------
+SET SERVEROUTPUT ON;
+SET ECHO OFF;
+SET VERIFY OFF;
+
+-- Inserare Date în Tabel REȚETA
+insert into doctor4.reteta values (1, null, null, null, 25, 10);
+insert into doctor4.reteta values (2, 'CardioPlus', 'Revenire peste o luna la consultatie', null, 25, 11);
+commit;
+select * from doctor4.reteta;

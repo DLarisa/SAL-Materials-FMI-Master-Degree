@@ -1,0 +1,53 @@
+en
+conf term
+no ip domain-lookup
+hostname SWNUME --------
+no cdp run
+----------------------------------
+service password-encryption
+enable secret ciscosecpa55
+enable password ciscoenapa55
+banner motd #Vineri, la 12, serverul va fi oprit!#
+logging host 209.165.201.126 ----- DNS
+service timestamps log datetime msec
+service timestamps debug datetime msec
+---------------------------------- (Consolă)
+line con 0
+pass ciscoconpa55
+login
+logging synchronous
+exec-timeout 25 25
+exit
+---------------------------------- (Vty)
+line vty 0 15
+pass ciscovtypa55
+login
+logging synchronous
+exec-timeout 25 25
+exit
+----------------------------------
+do wr
+ntp server 192.168.20.30 ----- (DNS)
+ntp authenticate
+ntp trusted-key 1
+ntp authentication-key 1 md5 NTPpa55
+----------------------------------
+ip domain name SLA.RO
+username Admin01 privilege 15 secret Admin01pa55
+line vty 0 15
+trans input ssh
+login local
+exit
+crypto key g rsa --------> 2048
+---------------------------------- (Vlan)
+interface vlan 1
+description Legatura cu 192.168.10.0/27
+ip address 192.168.10.2 255.255.255.240 ----- (IP Switch = D.Gw.+1, S.M.)
+no sh
+do wr
+---------------------------------- (Specific Switch)
+interface range fa 0/1-24
+sh
+exit
+ip default-gateway 192.168.10.161 ----- D.Gw.
+do wr

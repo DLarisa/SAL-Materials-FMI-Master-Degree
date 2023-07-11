@@ -1,0 +1,138 @@
+-- connect as sys and grant execute permissions  on the DBMS_CRYPTO package for the vault user
+GRANT EXECUTE ON SYS.DBMS_CRYPTO TO vault;
+
+-- moving on to the vault user account
+-- setting location_of_encryption_key for shared credentials
+UPDATE credentials
+    SET location_of_encryption_key = 
+        CASE credential_id
+            WHEN 103 THEN 'https://192.168.10.10/TUnJuzfycy.txt' 
+            WHEN 104 THEN 'https://192.168.10.10/keNMJxU62l.txt' 
+            WHEN 105 THEN 'https://192.168.10.10/W8iBlMkXod.txt' 
+            WHEN 106 THEN 'https://192.168.10.10/nxf2HN1rlC.txt' 
+            WHEN 107 THEN 'https://192.168.10.10/SWVrUM5GMK.txt' 
+        END
+    WHERE credential_id >=103 AND credential_id <=107;
+
+-- function that computes the key that's going to be used for encryption
+CREATE OR REPLACE FUNCTION get_encryption_key
+    (id_of_the_credential_i_want_to_encrypt credentials.credential_id%TYPE)
+RETURN VARCHAR2
+AS
+    encryption_key VARCHAR2(255);
+    how_many_people_have_access NUMBER(5);
+BEGIN
+    SELECT COUNT(credential_id)
+    INTO how_many_people_have_access 
+    FROM rights_management
+    WHERE credential_id = id_of_the_credential_i_want_to_encrypt;
+    
+    IF how_many_people_have_access > 1
+        THEN 
+            SELECT SUBSTR(location_of_encryption_key, LENGTH(location_of_encryption_key) - 13, 10)
+            INTO encryption_key
+            FROM credentials
+            WHERE credential_id = id_of_the_credential_i_want_to_encrypt;
+        ELSE 
+           SELECT vault_password
+           INTO encryption_key
+           FROM employees JOIN rights_management USING (employee_id) 
+           WHERE credential_id = id_of_the_credential_i_want_to_encrypt AND rights = 'OWNER';
+    END IF;
+    RETURN encryption_key;
+END;
+/
+BEGIN -- testing
+  DBMS_OUTPUT.PUT_LINE(get_encryption_key(102)); -- encryption key for 102 should be password123, because that's its owner unhashed vault password
+	DBMS_OUTPUT.PUT_LINE(get_encryption_key(103)); -- encryption key for 103 should be TUnJuzfycy, because that's the key indicated by location_of_encryption_key
+END;
+/
+
+-- aes encryption function
+CREATE OR REPLACE FUNCTION encrypt_using_aes(
+    secret_value IN VARCHAR2,
+    encryption_key IN VARCHAR2)
+RETURN RAW
+AS 
+    encrypted_value RAW(1000);
+BEGIN
+    encrypted_value := DBMS_CRYPTO.ENCRYPT(
+        src => utl_raw.cast_to_raw(secret_value),
+        key => utl_raw.cast_to_raw(encryption_key),
+        typ => DBMS_CRYPTO.ENCRYPT_AES128 + DBMS_CRYPTO.CHAIN_CBC + DBMS_CRYPTO.PAD_ZERO
+    );
+    RETURN encrypted_value;
+END;
+/
+-- testing the encryption
+BEGIN 
+    DBMS_OUTPUT.PUT_LINE(encrypt_using_aes('ana are mere', 'VERYLONGPASSWORD'));
+END;
+/
+
+-- aes decryption function
+CREATE OR REPLACE FUNCTION decrypt_using_aes(
+    encrypted_value IN RAW,
+    encryption_key IN VARCHAR2)
+RETURN VARCHAR2
+AS 
+    secret_value VARCHAR2(255);
+BEGIN
+    secret_value := DBMS_CRYPTO.DECRYPT(
+        src => encrypted_value,
+        key => utl_raw.cast_to_raw(encryption_key),
+        typ => DBMS_CRYPTO.ENCRYPT_AES128 + DBMS_CRYPTO.CHAIN_CBC + DBMS_CRYPTO.PAD_ZERO
+    );
+    RETURN UTL_RAW.CAST_TO_VARCHAR2(secret_value);
+END;
+/
+-- testing the decryption
+BEGIN 
+    DBMS_OUTPUT.PUT_LINE(decrypt_using_aes('1B592743FCAB0FA185445916121FBF59', 'VERYLONGPASSWORD'));
+END;
+/
+
+-- another test of the encryption and decryption functions
+SELECT decrypt_using_aes(encrypt_using_aes(password, 'VERYLONGPASSWORD'), 'VERYLONGPASSWORD')
+FROM credentials;
+
+-- another test of the encryption and decryption functions
+SELECT decrypt_using_aes(encrypt_using_aes(password, SUBSTR(get_encryption_key(credential_id) || ' DUMMY DATA ADDED TO EXTEND KEY LENGTH', 1, 16)), SUBSTR(get_encryption_key(credential_id) || ' DUMMY DATA ADDED TO EXTEND KEY LENGTH', 1, 16))
+FROM credentials;
+
+-- encrypting data
+UPDATE credentials 
+    SET password = encrypt_using_aes(password, SUBSTR(get_encryption_key(credential_id) || ' DUMMY DATA ADDED TO EXTEND KEY LENGTH', 1, 16));
+
+-- checking data after encryption
+SELECT * FROM credentials;
+
+-- sha256 hashing function
+CREATE OR REPLACE FUNCTION hash_using_sha256(
+    secret_value IN VARCHAR2
+)
+RETURN RAW 
+AS
+    hashed_value RAW(32);
+BEGIN 
+    hashed_value := DBMS_CRYPTO.HASH(utl_i18n.string_to_raw(secret_value, 'AL32UTF8'), DBMS_CRYPTO.HASH_SH256);
+    RETURN hashed_value;
+END;
+/
+-- testing hashing function
+BEGIN
+    DBMS_OUTPUT.PUT_LINE(hash_using_sha256('ana are mere'));
+END;
+/
+
+-- another test of the hashing function
+SELECT vault_password, hash_using_sha256(vault_password)
+FROM employees;
+
+-- hashing vault passwords 
+UPDATE employees
+    SET vault_password = hash_using_sha256(vault_password);
+
+-- testing
+SELECT * FROM employees;
+

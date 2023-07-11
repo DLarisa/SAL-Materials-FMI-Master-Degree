@@ -1,0 +1,75 @@
+en
+conf term
+no ip domain-lookup
+hostname RNUME -----
+no cdp run
+service password-encryption
+---------------------------------- (Specific Router)
+security passwords min-length 10
+login block-for 60 attempts 3 within 15
+----------------------------------
+enable secret ciscosecpa55
+enable password ciscoenapa55
+banner motd #Vineri, la 12, serverul va fi oprit!#
+banner login #Accesul persoanelor neautorizate interzis!#
+logging host 209.165.201.126 ----- DNS
+service timestamps log datetime msec
+service timestamps debug datetime msec
+---------------------------------- (Consolă)
+line con 0
+pass ciscoconpa55
+login
+logging synchronous
+exec-timeout 25 25
+exit
+---------------------------------- (Vty)
+line vty 0 15
+pass ciscovtypa55
+login
+logging synchronous
+exec-timeout 25 25
+exit
+----------------------------------
+do wr
+ntp server 192.168.20.30 ----- (DNS)
+ntp authenticate
+ntp trusted-key 1
+ntp authentication-key 1 md5 NTPpa55
+ntp update-calendar
+----------------------------------
+ip domain name SLA.RO
+username Admin01 privilege 15 secret Admin01pa55
+line vty 0 15
+trans input ssh
+login local
+exit
+crypto key g rsa --------> 2048
+
+---------------------------------- (REPEAT DOAR PENTRU giga)
+interface g0/0
+description Legatura cu 192.168.10.160/27 -----
+ip address 192.168.10.161 255.255.255.224 ----- (IP Router=D.Gw., S.M.)
+!!!ip helper-address 209.165.205.190 ----- (DNS; pt a activa DHCP; doar pe interfața de G0/0)
+no sh 
+do wr
+exit
+
+---------------------------------- (REPEAT DOAR PENTRU serial)
+interface s0/0/0
+description Legatura cu 20.20.20.20/30 -----
+ip address 20.20.20.21 255.255.255.252 ----- (IP Router=D.Gw., S.M.)
+[[[[
+ip ospf authentication message-digest
+ip ospf message-digest-key 1 md5 MD5pa55
+encapsulation ppp
+ppp authentication chap
+username ROUTER_ALĂTURAT secret 0123456789 ----- (Numele Routerului care e la celălalt capăt al legăturii serial)
+]]]]
+no sh
+do wr
+exit
+
+---------------------------------- (Rutare Statică)
+---REPEAT (nu luăm rețelele adiacente)---
+ip route 209.165.200.0 255.255.255.0 s0/0/0 ----- N.A., S.M., serialul de intrare în router (Ex și explicații în Lab10)
+---END REPEAT---

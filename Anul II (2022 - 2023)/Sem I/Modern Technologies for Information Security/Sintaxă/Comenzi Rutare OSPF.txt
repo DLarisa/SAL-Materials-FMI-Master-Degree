@@ -1,0 +1,8 @@
+en
+conf term
+router ospf 1
+----- REPETĂ ---- START
+network 192.168.0.12 0.0.0.3 area 0  --- MODIFICĂ (NA device conectat; 255.255.255.255-mască device conectat; aceași arie peste tot în rețea)
+----- REPETĂ ---- END
+area 0 authentication message-digest
+do wr

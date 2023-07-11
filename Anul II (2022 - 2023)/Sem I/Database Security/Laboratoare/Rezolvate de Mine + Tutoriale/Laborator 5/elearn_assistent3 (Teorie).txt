@@ -1,0 +1,12 @@
+----- Teorie
+select ev.cod_student || ' ' || ev.grade || ' ' || ex.exam_date || ' ' || s.title as info
+from elearn_app_admin.assessment ev, elearn_app_admin.exam ex, elearn_app_admin.subject s
+where ev.exam_id=ex.id and ex.subject_id=s.id; -- nu va rula (insuficiente privilegii)
+-- tot nu va rula, chiar după drepturi, pt că a primit privilegiu de procedură, nu de SELECT
+
+
+exec elearn_app_admin.proc_cdynam('select last_name from student_');
+-- Poate să încalce privilegiile și să ceară mai mult (cursoarele dinamice sunt periculoase -- divulgare informații)
+exec elearn_app_admin.proc_cdynam('SELECT EV.student_id|| EV.grade||EX.EXAM_DATE||S.TITLE as Info FROM elearn_app_admin.assessment ev, elearn_app_admin.exam ex, elearn_app_admin.subject s WHERE ev.exam_id=ex.id AND ex.subject_id=s.id');
+-- Nu va merge (cursorul dinamic poate doar SELECT, nu operații pe tabele)
+exec elearn_app_admin.proc_cdynam('delete from assessment');

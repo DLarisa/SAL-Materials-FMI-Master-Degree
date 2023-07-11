@@ -1,0 +1,111 @@
+-- using the sys account, we offer a few privileges to the vault acount
+GRANT CREATE ANY CONTEXT, CREATE PUBLIC SYNONYM TO vault;
+GRANT EXECUTE ON DBMS_RLS TO PUBLIC;
+
+-- after returning to the vault account
+-- creating an application context
+CREATE CONTEXT vault_context USING vault.context_package;
+
+-- creating the package associated to the context
+CREATE OR REPLACE PACKAGE context_package AS
+    PROCEDURE set_context;
+END;
+/
+
+CREATE OR REPLACE PACKAGE BODY context_package IS
+		PROCEDURE set_context IS
+				v_employee_id NUMBER(5);
+				v_connected_user VARCHAR2(255);
+		BEGIN
+				v_connected_user := SYS_CONTEXT('USERENV','SESSION_USER');
+				IF is_number(SUBSTR(v_connected_user, 2, LENGTH(v_connected_user)-1)) = 1
+						THEN v_employee_id := TO_NUMBER(SUBSTR(v_connected_user, 2, LENGTH(v_connected_user)-1));
+				ELSE v_employee_id := NULL;
+				END IF;
+				DBMS_SESSION.set_context('vault_context', 'connected_employee_id', v_employee_id);
+    END set_context;
+END context_package;
+/
+
+-- granting execution rights on the package functions for everyone 
+GRANT EXECUTE ON vault.context_package TO PUBLIC;
+CREATE PUBLIC SYNONYM context_package FOR vault.context_package;
+
+-- creating a trigger that sets the context at logon
+CREATE OR REPLACE TRIGGER set_security_context
+AFTER LOGON ON DATABASE
+BEGIN
+    context_package.set_context;
+END;
+/
+
+CREATE OR REPLACE PACKAGE security_package AS
+    FUNCTION credentials_security(owner VARCHAR2, objname VARCHAR2)
+        RETURN VARCHAR2;
+END security_package;
+/
+
+CREATE OR REPLACE PACKAGE BODY security_package IS
+    FUNCTION credentials_security(owner VARCHAR2, objname VARCHAR2) RETURN VARCHAR2 IS
+        predicate VARCHAR2(2000);
+    BEGIN
+        IF SYS_CONTEXT('vault_context', 'connected_employee_id') = NULL
+            THEN predicate := '1!=1';
+        ELSE
+            predicate := 'credential_id IN (SELECT credential_id 
+											FROM rights_management
+											WHERE employee_id = SYS_CONTEXT(''vault_context'', ''connected_employee_id''))';
+        END IF;
+        RETURN predicate;
+    END credentials_security;
+END security_package;
+/
+
+-- command to avoid error when adding policy
+ALTER SYSTEM SET "_allow_insert_with_update_check"=TRUE scope=spfile;
+-- then restart
+
+-- all users need execution rights on the security_package
+GRANT EXECUTE ON vault.security_package TO PUBLIC;
+CREATE PUBLIC SYNONYM security_package FOR vault.security_package;
+/
+
+-- adding policy 
+BEGIN
+    DBMS_RLS.add_policy(
+        object_schema => 'vault', 
+        object_name => 'credentials',
+        policy_name => 'credentials_policy',
+        function_schema => 'vault',
+        policy_function => 'security_package.credentials_security',
+        statement_types => 'SELECT, INSERT, UPDATE, DELETE');
+END;
+/
+
+-- testing the policies applied
+-- from vault's accounts, checking the rights_management table
+SELECT * FROM rights_management;
+
+-- after connecting with E55555's account, for example, try selecting the credentials table
+-- only the credentials that user has access to will be viewable
+SELECT * FROM vault.credentials;
+
+-- testing for SQL injection
+CREATE OR REPLACE PROCEDURE VERIFY_LOGIN (used_username VARCHAR2, used_password VARCHAR2) AS
+    v_login_status NUMBER(2) :=-1;
+BEGIN
+    EXECUTE IMMEDIATE 'SELECT COUNT(*) FROM employees WHERE employee_id=''' || SUBSTR(used_username, 2, LENGTH(used_username)-1) || '''
+        AND vault_password=hash_using_sha256(''' || used_password ||''')' INTO v_login_status;
+    DBMS_OUTPUT.PUT_LINE('SELECT COUNT(*) FROM employees WHERE employee_id=''' || SUBSTR(used_username, 2, LENGTH(used_username)-1) || '''
+        AND vault_password=hash_using_sha256(''' || used_password ||''')');
+    IF v_login_status=0 THEN
+        DBMS_OUTPUT.PUT_LINE('Login failed');
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('Login successful');
+    END IF;
+END;
+/
+EXEC VERIFY_LOGIN('E10000', 'password123');
+EXEC VERIFY_LOGIN('E10000', 'wrongpassword');
+EXEC VERIFY_LOGIN('E10000''--','wrongpassword');
+EXEC VERIFY_LOGIN('123'' OR 1=1 --', 'SOMETHING');

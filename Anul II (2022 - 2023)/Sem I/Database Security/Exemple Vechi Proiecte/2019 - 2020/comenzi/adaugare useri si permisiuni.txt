@@ -1,0 +1,29 @@
+create user c##employee1 identified by "1234";
+create user c##employee2 identified by "1234";
+create user c##employee3 identified by "1234";
+create user c##employee4 identified by "1234";
+create user c##agency_administrator identified by "administrator";
+create user c##agency_owner identified by "owner";
+create user c##agency_admin identified by "admin";
+create user c##manager1 identified by "admin";
+create user c##manager2 identified by "admin";
+create user c##manager3 identified by "admin";
+
+
+
+
+
+grant CREATE SESSION, ALTER SESSION, CREATE DATABASE LINK, CREATE MATERIALIZED VIEW,
+CREATE PROCEDURE, CREATE PUBLIC SYNONYM, CREATE ROLE, CREATE SEQUENCE, CREATE SYNONYM,
+CREATE TABLE, CREATE TRIGGER, CREATE TYPE, CREATE VIEW, UNLIMITED TABLESPACE to c##agency_administrator;
+
+GRANT EXECUTE ON dbms_crypto TO c##employee1;
+GRANT EXECUTE ON dbms_crypto TO c##employee2;
+GRANT EXECUTE ON dbms_crypto TO c##employee3;
+GRANT EXECUTE ON dbms_crypto TO c##employee4;
+GRANT EXECUTE ON dbms_crypto TO c##agency_administrator;
+GRANT EXECUTE ON dbms_crypto TO c##agency_owner;
+GRANT EXECUTE ON dbms_crypto TO c##agency_admin;
+GRANT EXECUTE ON dbms_crypto TO C##manager1;
+GRANT EXECUTE ON dbms_crypto TO C##manager2;
+GRANT EXECUTE ON dbms_crypto TO C##manager3;

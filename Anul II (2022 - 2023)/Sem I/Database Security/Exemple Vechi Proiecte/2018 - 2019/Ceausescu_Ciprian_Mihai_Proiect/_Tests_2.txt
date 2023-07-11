@@ -1,0 +1,12 @@
+--SET LOCAL SESSION AUTHORIZATION root;
+--SET LOCAL SESSION AUTHORIZATION postgres;
+
+--Insert
+--GRANT INSERT ON products TO root;
+--GRANT DELETE ON products TO root;
+--GRANT UPDATE on products TO root;
+
+--INSERT into products(name, description, price, image_url) values ('ipad', 'ipad description', '4000', 'http://ipad.jpg'); // nu avem acces la id_prod_seq
+--INSERT into products(id, name, description, price, image_url) values (6,'ipad', 'ipad description', '4000', 'http://ipad.jpg'); //works
+
+--Update products set name = 'ipod ipod' where id = 7;

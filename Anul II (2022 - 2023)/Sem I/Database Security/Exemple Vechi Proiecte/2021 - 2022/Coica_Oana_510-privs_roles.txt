@@ -1,0 +1,144 @@
+-- creating the role used for HR 
+-- granting privileges:
+-- HR can SELECT data on the employees table (except the vault_password field) using only the employees_hr_view;
+-- HR can INSERT and UPDATE data directly on the employees table (except the vault_password field);
+CREATE ROLE HR_Management;
+
+GRANT CONNECT 
+TO HR_Management;
+
+CREATE VIEW employees_hr_view AS
+SELECT employee_id, email_address, first_name, last_name, job_title, hiring_date, end_date, personal_numerical_code
+FROM employees;
+
+GRANT SELECT 
+ON employees_hr_view
+TO HR_Management;
+
+GRANT INSERT(employee_id, email_address, first_name, last_name, job_title, hiring_date, end_date, personal_numerical_code),
+      UPDATE(employee_id, email_address, first_name, last_name, job_title, hiring_date, end_date, personal_numerical_code)
+ON vault.employees
+TO HR_Management;
+
+--------
+-- creating the role used for IT
+-- granting privileges:
+-- IT can SELECT, INSERT and UPDATE data on the platforms table
+CREATE ROLE IT_Administration;
+
+GRANT CONNECT 
+TO IT_Administration;
+
+GRANT SELECT, INSERT, UPDATE 
+ON vault.platforms
+TO IT_Administration;
+
+--------
+-- creating the role used for Audit
+-- granting privileges:
+-- Audit can SELECT data on the platforms table 
+-- Audit can SELECT data on the vault_access_audit table
+CREATE ROLE CS_Audit;
+
+GRANT CONNECT 
+TO CS_Audit;
+
+GRANT SELECT 
+ON vault.platforms 
+TO CS_Audit;
+
+GRANT SELECT 
+ON vault.vault_access_audit
+TO CS_Audit;
+
+---------
+-- creating the role used for vault users
+-- granting privileges:
+-- vault users can SELECT data on the platforms table 
+-- vault users can SELECT data on the employees table using only the employees_user_view
+-- vault users can SELECT, INSERT, UPDATE and DELETE data on the credentials table
+-- vault users can SELECT, INSERT, UPDATE and DELETE data on the rights_management table
+CREATE ROLE Vault_User;
+
+GRANT CONNECT 
+TO Vault_User;
+
+GRANT SELECT 
+ON vault.platforms 
+TO Vault_User;
+
+CREATE VIEW employees_user_view AS
+SELECT employee_id, email_address, first_name, last_name, job_title, hiring_date, end_date
+FROM employees;
+
+GRANT SELECT
+ON employees_user_view
+TO Vault_User;
+
+GRANT SELECT, INSERT, UPDATE, DELETE 
+ON vault.credentials
+TO Vault_User; 
+
+GRANT SELECT, INSERT, UPDATE, DELETE 
+ON vault.rights_management
+TO Vault_User; 
+
+--------
+-- creating the role used for ex_employees
+-- granting privileges:
+-- ex-employees can SELECT data on the platforms table 
+-- ex-employees can SELECT data on the credentials table
+CREATE ROLE Ex_Employee;
+
+GRANT CONNECT 
+TO Ex_Employee;
+
+GRANT SELECT 
+ON vault.platforms 
+TO Ex_Employee;
+
+GRANT SELECT 
+ON vault.credentials
+TO Ex_Employee;
+
+---------
+-- granting privileges to theadmin user:
+-- the admin can SELECT data on the platforms table 
+-- the admin can SELECT data on the employees table using only the employees_user_view
+-- the admin can SELECT data on the employees table (except the personal_numerical_code field)
+-- the admin can SELECT data on the credentials table 
+-- the admin can SELECT data on the vault_access_audit table
+GRANT CONNECT, CREATE USER, ALTER USER
+TO THEADMIN;
+
+GRANT SELECT 
+ON vault.platforms 
+TO THEADMIN;
+
+GRANT SELECT
+ON employees_user_view
+TO THEADMIN;
+
+GRANT UPDATE(employee_id, email_address, first_name, last_name, vault_password, job_title, hiring_date, end_date)
+ON vault.employees 
+TO THEADMIN;
+
+GRANT SELECT
+ON vault.credentials
+TO THEADMIN;
+
+GRANT SELECT 
+ON vault.vault_access_audit
+TO THEADMIN;
+
+-- assigning roles to users
+GRANT Vault_User TO E10000;
+GRANT Vault_User, HR_Management TO E11111;
+GRANT Vault_User, IT_Administration TO E22222;
+GRANT Vault_User, HR_Management TO E33333;
+GRANT Vault_User TO E44444;
+GRANT Vault_User, HR_Management TO E55555;
+GRANT Vault_User, IT_Administration TO E66666;
+GRANT Vault_User, IT_Administration TO E77777;
+GRANT Vault_User, IT_Administration TO E88888;
+GRANT Vault_User, CS_Audit TO E99999;

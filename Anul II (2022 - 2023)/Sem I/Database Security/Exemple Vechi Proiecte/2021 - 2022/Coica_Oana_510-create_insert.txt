@@ -1,0 +1,140 @@
+-- creating a new user called vault; this user's scheme is going to hold all tables
+ALTER SESSION SET "_ORACLE_SCRIPT"=TRUE;
+
+CREATE USER vault IDENTIFIED BY Welcome123
+   DEFAULT TABLESPACE USERS
+   TEMPORARY TABLESPACE TEMP
+   QUOTA UNLIMITED ON USERS;
+/
+
+GRANT CONNECT, DBA TO vault;
+/
+
+-- after switching to the vault account, we start creating tables
+CREATE TABLE platforms(
+    platform_id NUMBER(5) NOT NULL,
+    platform_name VARCHAR2(50) NOT NULL,
+    access_details VARCHAR2(255),
+    platform_description VARCHAR2(255),
+    CONSTRAINT pk_platforms PRIMARY KEY(platform_id)
+);
+
+INSERT ALL 
+    INTO platforms VALUES (10001, 'Microsoft Office 365', 'https://www.office.com/', 'cloud-based productivity and collaboration applications')
+    INTO platforms VALUES (10002, 'TeamPass', 'https://192.168.123.123/', 'our old collaborative password manager')
+    INTO platforms VALUES (10003, 'Trend Micro Cloud App Security', 'https://admin-eu.tmcas.trendmicro.com/', 'security solution for cloud applications')
+    INTO platforms VALUES (10004, 'Linkedin', 'https://linkedin.com/', 'social network focused on professional networking')
+    INTO platforms VALUES (10005, 'Tufin', 'https://192.168.123.120/', 'firewall management solution')
+    INTO platforms VALUES (10006, 'Trend Micro Deep Security', 'https://10.10.108.106/', 'security solution for servers')
+    INTO platforms VALUES (10007, 'Symantec Data Loss Prevention', 'https://10.10.108.107/', 'DLP solution')
+    INTO platforms VALUES (10008, 'Veritas Data Insight', 'https://10.10.108.109', 'data classification solution')
+    INTO platforms VALUES (10009, 'Pluralsight', 'https://www.pluralsight.com', 'learning platform')
+    INTO platforms VALUES (10010, 'Notion', 'https://www.notion.so/', 'collaborative note-taking application')
+SELECT * FROM dual;
+
+CREATE TABLE employees(
+    employee_id NUMBER(5) NOT NULL,
+    email_address VARCHAR2(255) UNIQUE NOT NULL,
+    vault_password VARCHAR2(64),
+    first_name VARCHAR2(50),
+    last_name VARCHAR2(50),
+    job_title VARCHAR2(50) NOT NULL,
+    hiring_date DATE NOT NULL, 
+    end_date DATE, 
+    personal_numerical_code VARCHAR2(13) UNIQUE NOT NULL,
+    CONSTRAINT pk_employees PRIMARY KEY(employee_id)
+);
+
+INSERT ALL 
+    INTO employees VALUES (10000, 'mhuckerbe@thisisfake.com', 'password123',  'Mathian', 'Huckerbe', 'Network Engineer', TO_DATE('2021-03-16', 'YYYY-MM-DD'), NULL, '1950114246001')
+    INTO employees VALUES (11111, 'djanczewski@thisisfake.com', 'password123',  'Doralin', 'Janczewski', 'Human Resources Assistant', TO_DATE('2021-01-19', 'YYYY-MM-DD'), NULL, '1921007134712')
+    INTO employees VALUES (22222, 'rmulliner@thisisfake.com', 'password123',  'Ram', 'Mulliner', 'Infrastructure Architect', TO_DATE('2019-07-16', 'YYYY-MM-DD'), NULL, '1901112028549')
+    INTO employees VALUES (33333, 'arobbe@thisisfake.com', 'password123',  'Ambrose', 'Robbe', 'Recruiting Specialist', TO_DATE('2017-05-13', 'YYYY-MM-DD'), NULL, '1890409527209')
+    INTO employees VALUES (44444, 'gtoffanelli#thisisfake.com', 'password123',  'Georgetta', 'Toffanelli', 'Network Engineer', TO_DATE('2009-12-12', 'YYYY-MM-DD'), NULL, '2990311407435')
+    INTO employees VALUES (55555, 'eyanuk@thisisfake.com', 'password123',  'Eveline', 'Yanuk', 'Human Resources Manager', TO_DATE('2014-02-27', 'YYYY-MM-DD'), NULL, '2880315304490')
+    INTO employees VALUES (66666, 'carenaguise@thisisfake.com', 'password123',  'Carena', 'de Guise', 'Security Specialist', TO_DATE('2012-09-09', 'YYYY-MM-DD'), NULL, '2981010411887')
+    INTO employees VALUES (77777, 'edanskine1a#thisisfake.com', 'password123',  'Evelina', 'Danskine', 'Information Security Manager', TO_DATE('2017-07-03', 'YYYY-MM-DD'), NULL, '2910822053015')
+    INTO employees VALUES (88888, 'atown@thisisfake.com', 'password123',  'Alec', 'Towner', 'System Administrator', TO_DATE('2011-03-05', 'YYYY-MM-DD'), NULL, '1900725150301')
+    INTO employees VALUES (99999, 'elytyt@thisisfake.com', 'password123',  'Elyssa', 'Tyt', 'Internal Auditor', TO_DATE('2019-04-23', 'YYYY-MM-DD'), NULL, '2990920449782')
+SELECT * FROM dual;
+
+CREATE TABLE credentials(
+    credential_id NUMBER(8) NOT NULL,
+    platform_id NUMBER(5) NOT NULL,
+    username VARCHAR2(50),
+    password VARCHAR2(255),
+    created DATE NOT NULL,
+    last_changed DATE NOT NULL,
+    expiration_date DATE,
+    location_of_encryption_key VARCHAR2(255) UNIQUE,
+    CONSTRAINT pk_credentials PRIMARY KEY(credential_id),
+    CONSTRAINT fk_platforms FOREIGN KEY(platform_id)
+        REFERENCES platforms(platform_id)
+);
+
+INSERT ALL 
+    INTO credentials VALUES (100, 10001, 'eyanuk@thisisfake.com', 'MicrosoftPassword', TO_DATE('2022-01-01', 'YYYY-MM-DD'), TO_DATE('2022-01-01', 'YYYY-MM-DD'), NULL, NULL)
+    INTO credentials VALUES (101, 10002, 'eyanuk@thisisfake.com', 'TeamPassPassword', TO_DATE('2022-01-01', 'YYYY-MM-DD'), TO_DATE('2022-01-01', 'YYYY-MM-DD'), NULL, NULL)
+    INTO credentials VALUES (102, 10009, 'eyanuk@thisisfake.com', 'PluralsightPassword', TO_DATE('2022-01-01', 'YYYY-MM-DD'), TO_DATE('2022-01-01', 'YYYY-MM-DD'), NULL, NULL)
+    INTO credentials VALUES (103, 10003, 'MasterAdmin', 'thisisfake123', TO_DATE('2022-01-01', 'YYYY-MM-DD'), TO_DATE('2022-01-01', 'YYYY-MM-DD'), NULL, NULL)
+    INTO credentials VALUES (104, 10006, 'MasterAdmin', 'thisisfake123', TO_DATE('2022-01-01', 'YYYY-MM-DD'), TO_DATE('2022-01-01', 'YYYY-MM-DD'), NULL, NULL)
+    INTO credentials VALUES (105, 10007, 'Administrator', 'thisisfake123', TO_DATE('2022-01-01', 'YYYY-MM-DD'), TO_DATE('2022-01-01', 'YYYY-MM-DD'), NULL, NULL)
+    INTO credentials VALUES (106, 10005, 'admin', 'tufin123', TO_DATE('2022-01-01', 'YYYY-MM-DD'), TO_DATE('2022-01-01', 'YYYY-MM-DD'), NULL, NULL)
+    INTO credentials VALUES (107, 10004, 'hr@thisisfake.com', 'LinkedinPassword', TO_DATE('2022-01-01', 'YYYY-MM-DD'), TO_DATE('2022-01-01', 'YYYY-MM-DD'), NULL, NULL)
+SELECT * FROM dual;
+
+CREATE TABLE rights_management(
+    credential_id NUMBER(8) NOT NULL,
+    employee_id NUMBER(5) NOT NULL,
+    rights VARCHAR2(5),    
+    CONSTRAINT pk_rights PRIMARY KEY(credential_id, employee_id),
+    CONSTRAINT fk_credentials FOREIGN KEY(credential_id)
+        REFERENCES credentials(credential_id),
+    CONSTRAINT fk_employees FOREIGN KEY(employee_id)
+        REFERENCES employees(employee_id),
+    CONSTRAINT chk_rights CHECK (rights IN ('VIEW', 'EDIT', 'OWNER'))
+);
+
+INSERT ALL 
+    INTO rights_management VALUES (100, 55555, 'OWNER')
+    INTO rights_management VALUES (101, 55555, 'OWNER')
+    INTO rights_management VALUES (102, 55555, 'OWNER')
+    INTO rights_management VALUES (103, 77777, 'OWNER')
+    INTO rights_management VALUES (103, 66666, 'EDIT')
+    INTO rights_management VALUES (103, 22222, 'VIEW')
+    INTO rights_management VALUES (103, 88888, 'VIEW')
+    INTO rights_management VALUES (104, 77777, 'OWNER')
+    INTO rights_management VALUES (104, 66666, 'VIEW')
+    INTO rights_management VALUES (104, 22222, 'VIEW')
+    INTO rights_management VALUES (104, 88888, 'VIEW')
+    INTO rights_management VALUES (105, 77777, 'OWNER')
+    INTO rights_management VALUES (105, 66666, 'VIEW')
+    INTO rights_management VALUES (105, 22222, 'VIEW')
+    INTO rights_management VALUES (106, 22222, 'OWNER')
+    INTO rights_management VALUES (106, 10000, 'VIEW')
+    INTO rights_management VALUES (106, 44444, 'VIEW')
+    INTO rights_management VALUES (106, 66666, 'VIEW')
+    INTO rights_management VALUES (107, 55555, 'OWNER')
+    INTO rights_management VALUES (107, 33333, 'EDIT')
+    INTO rights_management VALUES (107, 11111, 'VIEW')
+SELECT * FROM dual;
+
+CREATE SEQUENCE log_seq
+	START WITH 10
+	INCREMENT BY 1
+	NOCACHE
+	NOCYCLE;
+
+CREATE TABLE vault_access_audit(
+    log_id NUMBER(10) NOT NULL,
+    employee_id NUMBER(5) NOT NULL,
+    credential_id NUMBER(8) NOT NULL,
+    time TIMESTAMP NOT NULL, 
+    action VARCHAR2(255) NOT NULL,
+    CONSTRAINT pk_logs PRIMARY KEY(log_id),
+    CONSTRAINT fk_vault_employees FOREIGN KEY(employee_id)
+        REFERENCES employees(employee_id),
+    CONSTRAINT fk_vault_credentials FOREIGN KEY(credential_id)
+        REFERENCES credentials(credential_id)
+);
+
