@@ -1,0 +1,6 @@
+https://github.com/adimanea/sla
+https://github.com/MocanuAlexandru/LabWork
+https://github.com/nappolitane/ReverseEngineering-Lab
+https://github.com/Bogdanisar/reverse-engineering-course
+https://pwnjournal.github.io/posts/ ---> RE
+https://security.cs.pub.ro/summer-school/wiki/start
