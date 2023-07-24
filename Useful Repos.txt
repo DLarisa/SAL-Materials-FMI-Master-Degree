@@ -4,3 +4,4 @@ https://github.com/nappolitane/ReverseEngineering-Lab
 https://github.com/Bogdanisar/reverse-engineering-course
 https://pwnjournal.github.io/posts/ ---> RE
 https://security.cs.pub.ro/summer-school/wiki/start
+https://github.com/radudilirici/reverse-engineering
